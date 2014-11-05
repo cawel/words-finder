@@ -10,24 +10,27 @@ $( document ).ready(function(){
   var dict_en = {};
 
   // fetch English dictionary
-  $.get('/dict_en', null, function(data){
-    dict_en = data;
+  $.get('/dict_en', null, function(response){
+    dict_en = response;
     $('#finder').removeAttr('disabled');
   });
 
-  $("#generator").click(function(event){
+  $("#ramdomizer").click(function(event){
+    $('.results').hide();
     $.makeArray($('input')).forEach(function(el){
       var random = Math.ceil( (Math.random() * 25) );
       $(el).val( alphabet[random] );
-      $('.results').hide();
     });
-
   });
 
 
   $("#finder").click(function(event){
     timer.start();
 
+    // can't have it working properly :(
+    // $('.loading').show();
+
+    // build matrix of all letters
     letters = jQuery.makeArray($('input')).map(function(el){
       return $(el).val();
     });
@@ -40,7 +43,7 @@ $( document ).ready(function(){
       }
     }
 
-    // fetch all possible combinations
+    // find all possible letter combinations
     words = [];
     for(i = 0; i < dimension; i++){
       for(j = 0; j < dimension; j++){
@@ -48,13 +51,14 @@ $( document ).ready(function(){
       }
     }
 
-    for(i=0; i<2; i++){
+    // max of 5-letter words for now (otherwise too slow)
+    for(i = 0; i < 3; i++){
       words.forEach(function(e){
         spread(e);
       });
     }
 
-    // cleaning results
+    // only keep words of a certain length
     words = words.filter(function(w){
       return w.longEnough();
     });
@@ -74,6 +78,15 @@ $( document ).ready(function(){
     // filter existing words
     words = words.filter(function(item) {
       return dict_en.indexOf(item.letters) != -1;
+    });
+
+    // sort words list
+    words = words.sort(function(item1, item2){
+      if ( item1.letters > item2.letters ){
+        return 1;
+      }else{
+        return -1;
+      }
     });
 
     $('.results').show();
