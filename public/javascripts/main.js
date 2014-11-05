@@ -12,6 +12,7 @@ $( document ).ready(function(){
   // fetch English dictionary
   $.get('/dict_en', null, function(data){
     dict_en = data;
+    $('#finder').removeAttr('disabled');
   });
 
   $("#generator").click(function(event){
