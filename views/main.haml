@@ -1,0 +1,55 @@
+!!!
+%html
+  %head
+    %script{src: "http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
+    %script{src: 'javascripts/main.js'}
+    %link{rel:"stylesheet", type:"text/css", href:"stylesheets/style.css"}
+  %body
+    %h1
+      Words Finder
+    .content
+      .gameplay
+        .letter-grid
+          .row
+            %input
+            %input
+            %input
+            %input
+            %input
+          .row
+            %input
+            %input
+            %input
+            %input
+            %input
+          .row
+            %input
+            %input
+            %input
+            %input
+            %input
+          .row
+            %input
+            %input
+            %input
+            %input
+            %input
+          .row
+            %input
+            %input
+            %input
+            %input
+            %input
+        .actions
+          %button{id: 'generator', type: 'button'}
+            Randomize
+          %button{id: 'finder', type: 'button'}
+            Find words
+
+      .loading{style: 'display: none'}
+        %img{src: '/images/loading.gif' }
+
+      .results{style:"display: none"}
+        %h2
+        %span.benchmark
+        .words

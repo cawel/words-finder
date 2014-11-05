@@ -1,0 +1,73 @@
+body{
+  font-size: large;
+  background-image: url(/images/bg.png);
+}
+
+h1{
+  text-align: center;
+}
+
+.gameplay{
+  display: table;
+  margin: auto;
+  padding: 25px;
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+}
+
+/* gameplay's background image */
+.gameplay::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/images/bg.jpg');
+  opacity: 0.1;
+  z-index: -1;
+  border-radius: 20px;
+} 
+
+.highlight-word{
+  background-color: yellow;
+}
+
+.highlight-letter{
+  background-color: yellow; border: #ccc 2px solid;
+}
+
+.actions{
+  margin-top: 25px;
+}
+
+.row{
+  margin-top: 10px;
+}
+
+.results{
+  display: table;
+  margin: auto;
+  max-width: 768px;
+}
+
+.benchmark{
+  color: #888;
+  font-size: 80%;
+}
+
+.loading{
+  display: table;
+  margin: auto;
+}
+
+input{
+  margin-right: 3px;
+  margin-left: 3px;
+  padding: 3px;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  font-size: 26px;
+}
