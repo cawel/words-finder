@@ -1,30 +1,49 @@
 $( document ).ready(function(){
 
-  $("input").attr("maxlength", 1);
-
-  var matrix = undefined;
   var dimension = undefined;
   var letters = [];
   var words = [];
   var alphabet = 'abcdefghijklmnopqrstuvwxyz';
   var dict_en = {};
 
-  // fetch English dictionary
-  $.get('/dict_en', null, function(response){
-    dict_en = response;
-    $('#finder').removeAttr('disabled');
-  });
 
-  $("#ramdomizer").click(function(event){
-    $('.results').hide();
-    $.makeArray($('input')).forEach(function(el){
-      var random = Math.ceil( (Math.random() * 25) );
-      $(el).val( alphabet[random] );
-    });
-  });
+  var WordsFinder = function(){
+    var matrix = undefined;
+    var init = function(){
+
+      $("input").attr("maxlength", 1);
+
+      $("#ramdomizer").click(function(event){
+        $('.results').hide();
+        $.makeArray($('input')).forEach(function(el){
+          var random = Math.ceil( (Math.random() * 25) );
+          $(el).val( alphabet[random] );
+        });
+      });
+    };
+
+    var fetchEnglishDictionary = function(){
+      $.get('/dict_en', null, function(response){
+        dict_en = response;
+        $('#finder').removeAttr('disabled');
+      });
+    };
+
+    return {
+      fetchEnglishDictionary: fetchEnglishDictionary,
+      init: init
+    };
+  };
+
+  var app = WordsFinder();
+  app.init();
+  app.fetchEnglishDictionary();
+
+
 
 
   $("#finder").click(function(event){
+    var timer = BenchmarkTimer();
     timer.start();
 
     // can't have it working properly :(
@@ -66,7 +85,7 @@ $( document ).ready(function(){
     // removes dupes
     var lot = [];
     words = words.filter(function(item) {
-      item.letterize();
+      item.letterize(matrix);
       if (lot.indexOf(item.letters) == -1){
         lot.push(item.letters);
         return true;
@@ -194,47 +213,31 @@ $( document ).ready(function(){
     return undefined;
   }
 
-  function Word(positions){
-    this.positions = positions.slice(0);
-    this.letters = '';
-    this.addPosition = function(position){
-      this.positions.push(position);
-    };
-    this.letterize = function(){
-      var chars = this.positions.map(function(e){
-        return matrix[e[0]][e[1]];
-      });
-      this.letters = chars.join('');
-    };
-    this.beenThere = function(position){
-      var found = false;
-      this.positions.forEach(function(e){
-        if(e[0] == position[0] && e[1] == position[1]){
-          found = true;
-        }
-      });
-      return found;
-    };
-    this.longEnough = function(){
-      return this.positions.length > 2;
-    };
-    return this;
-  }
-
-  var timer = {
-    startedAt: null,
-    stoppedAt: null,
-    start: function () {
-      this.stoppedAt = null;
-      this.startedAt = new Date();
-    },
-    stop: function () {
-      this.stoppedAt = new Date();
-    },
-    getTime: function () {
-      if (!this.stoppedAt) { this.stop(); }
-      return this.stoppedAt.getTime() - this.startedAt.getTime();
-    }
-  };
-
 });
+
+function Word(positions){
+  this.positions = positions.slice(0);
+  this.letters = '';
+  this.addPosition = function(position){
+    this.positions.push(position);
+  };
+  this.letterize = function(matrix){
+    var chars = this.positions.map(function(e){
+      return matrix[e[0]][e[1]];
+    });
+    this.letters = chars.join('');
+  };
+  this.beenThere = function(position){
+    var found = false;
+    this.positions.forEach(function(e){
+      if(e[0] == position[0] && e[1] == position[1]){
+        found = true;
+      }
+    });
+    return found;
+  };
+  this.longEnough = function(){
+    return this.positions.length > 2;
+  };
+  return this;
+}
