@@ -160,7 +160,8 @@ var WordsFinderApp = function(){
     var list = $('.words');
     var count = words.length;
     words.forEach(function(word){
-      list.append("<span data-positions='"+ word.getPositions().toString().replace(/,/g, '') +"'>" + word.getLetters(matrix) + '</span>');
+      var word_el = $('<span />').data('positions', word.getPositions().toString().replace(/,/g, '') ).html( word.getLetters(matrix) );
+      list.append(word_el);
       words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
     });
   }
