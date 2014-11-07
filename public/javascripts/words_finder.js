@@ -1,20 +1,19 @@
 $( document ).ready(function(){
 
   var app = WordsFinder();
-  app.start();
+  app.initialize();
 
 });
 
 
 var WordsFinder = function(){
 
-  var matrix = undefined;
+  var matrix;
   var alphabet = 'abcdefghijklmnopqrstuvwxyz';
-  var dimension = undefined;
+  var dimension;
   var dict_en = {};
-  var timer = BenchmarkTimer();
 
-  var start = function(){
+  var initialize = function(){
     $("input").attr("maxlength", 1);
     fetchEnglishDictionary();
     registerEventListeners();
@@ -34,6 +33,8 @@ var WordsFinder = function(){
       // can't make it work properly :(
       // $('.loading').show();
 
+      var timer = BenchmarkTimer();
+
       timer.start();
 
       var words = findWords();
@@ -41,6 +42,8 @@ var WordsFinder = function(){
       timer.stop();
 
       showWordsFound(words);
+
+      $('.benchmark').html('Results found in: ' + timer.getTime() + ' ms');
     });
 
     $('.words').on('mouseenter', 'span', function(event){
@@ -72,7 +75,7 @@ var WordsFinder = function(){
     var words = [];
     for(i = 0; i < dimension; i++){
       for(j = 0; j < dimension; j++){
-        spread( words, new Word([[i, j]]) );
+        spread( words, Word([[i, j]]) );
       }
     }
 
@@ -145,7 +148,6 @@ var WordsFinder = function(){
       list.append("<span data-positions='"+ word.positions.toString().replace(/,/g, '') +"'>" + word.getLetters(matrix) + '</span>');
       words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
     });
-    $('.benchmark').html('Results found in: ' + timer.getTime() + ' ms');
   }
 
   function fetchLetterElements( positions ){
@@ -170,10 +172,10 @@ var WordsFinder = function(){
   }
 
   function move(word, direction){
-    var current_position = word.positions[word.positions.length - 1];
+    var current_position = word.getLastPosition();
     var new_position = [current_position[0] + direction[0], current_position[1] + direction[1]];
     if( insideMatrix(new_position) && !word.beenThere(new_position)){
-      word.positions.push(new_position);
+      word.addPosition(new_position);
       return word;
     }
   }
@@ -194,7 +196,7 @@ var WordsFinder = function(){
       'left-up':    [-1, -1]
     };
     for(d in directions){
-      var candidate = move( new Word(word.positions), directions[d] );
+      var candidate = move( Word(word.positions), directions[d] );
       if( candidate != undefined ){
         words.push( candidate );
       }
@@ -210,16 +212,22 @@ var WordsFinder = function(){
 
   // export public interface
   return {
-    start: start
+    initialize: initialize
   };
 };
 
 
 function Word(positions){
   this.positions = positions.slice(0);
-  this.letters = undefined;
+  this.letters;
+  this.getPositions = function(){
+    return this.positions;
+  };
   this.addPosition = function(position){
     this.positions.push(position);
+  };
+  this.getLastPosition = function(){
+    return this.positions[this.positions.length - 1];
   };
   this.fillWithLetters = function(matrix){
     var chars = this.positions.map(function(e){
@@ -245,5 +253,15 @@ function Word(positions){
   this.longEnough = function(){
     return this.positions.length > 2;
   };
-  return this;
+
+  // export public interface
+  return {
+    positions:        this.positions,
+    addPosition:      this.addPosition,
+    getLastPosition:  this.getLastPosition,
+    fillWithLetters:  this.fillWithLetters,
+    getLetters:       this.getLetters,
+    beenThere:        this.beenThere,
+    longEnough:       this.longEnough
+  };
 }
