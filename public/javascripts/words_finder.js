@@ -177,12 +177,8 @@ var WordsFinderApp = function(){
 
   function toggleLettersHighlight( positions, highlight ){
     positions = positions.toString();
-    fetchLetterElements( positions ).map(function(l){
-      if (highlight){
-        l.addClass('highlight-letter');
-      }else{
-        l.removeClass('highlight-letter');
-      }
+    fetchLetterElements( positions ).map(function(el){
+      el.toggleClass('highlight-letter', highlight);
     });
   }
 
