@@ -53,7 +53,7 @@ var WordsFinderApp = function(){
         timer.stop();
         showWordsFound(words);
         $('.loading').hide();
-        $('.benchmark').html('Results found in: ' + timer.getTime() + ' ms');
+        $('.benchmark span').html( timer.getTime() );
         $('#finder').removeAttr('disabled');
         $('#randomizer').removeAttr('disabled');
       }, 10);
@@ -155,7 +155,7 @@ var WordsFinderApp = function(){
 
   function showWordsFound(words){
     $('.results').show();
-    $('.results h2').html('Words found: ' + words.length);
+    $('.results h2 span').html(words.length);
     $('.words').empty();
     var list = $('.words');
     var count = words.length;
