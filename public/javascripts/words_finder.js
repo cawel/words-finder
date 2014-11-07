@@ -21,7 +21,7 @@ var WordsFinder = function(){
 
   var registerEventListeners = function(){
 
-    $("#ramdomizer").click(function(event){
+    $("#randomizer").click(function(event){
       $('.results').hide();
       $.makeArray($('input')).forEach(function(el){
         var random = Math.ceil( (Math.random() * (alphabet.length - 1)) );
