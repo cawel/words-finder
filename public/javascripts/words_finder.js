@@ -34,16 +34,13 @@ var WordsFinder = function(){
       // $('.loading').show();
 
       var timer = BenchmarkTimer();
-
       timer.start();
-
       var words = findWords();
-
       timer.stop();
-
       showWordsFound(words);
-
       $('.benchmark').html('Results found in: ' + timer.getTime() + ' ms');
+
+      return false;
     });
 
     $('.words').on('mouseenter', 'span', function(event){
