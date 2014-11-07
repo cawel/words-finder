@@ -168,11 +168,11 @@ var WordsFinderApp = function(){
   function fetchLetterElements( positions ){
     var inputs = $('input');
     var length = positions.length;
-    var letters = [];
+    var letterElements = [];
     for(var i = 0; i < length; i += 2){
-      letters.push( $(inputs[parseInt(positions[i], 10) + dimension * parseInt(positions[i+1], 10)]) );
+      letterElements.push( $(inputs[parseInt(positions[i], 10) + dimension * parseInt(positions[i+1], 10)]) );
     }
-    return letters;
+    return letterElements;
   }
 
   function toggleLettersHighlight( positions, highlight ){
