@@ -1,12 +1,12 @@
 $( document ).ready(function(){
 
-  var app = WordsFinder();
+  var app = WordsFinderApp();
   app.initialize();
 
 });
 
 
-var WordsFinder = function(){
+var WordsFinderApp = function(){
 
   var matrix;
   var alphabet = 'abcdefghijklmnopqrstuvwxyz';
