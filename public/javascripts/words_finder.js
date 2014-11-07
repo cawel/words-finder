@@ -208,7 +208,7 @@ var WordsFinderApp = function(){
   }
 
   function fetchEnglishDictionary(){
-    $.get('/dict_en', null, function(response){
+    $.get('/dict_en', function(response){
       dict_en = response;
       $('#finder').removeAttr('disabled');
     });
