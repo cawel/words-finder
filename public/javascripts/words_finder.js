@@ -169,75 +169,36 @@ var WordsFinder = function(){
     });
   }
 
-  function move(word, move){
+  function move(word, direction){
     var current_position = word.positions[word.positions.length - 1];
-    if (move === 'up'){
-      new_position = [current_position[0], current_position[1] - 1];
-      if(new_position[1] > -1 && !word.beenThere(new_position)){
-        word.positions.push(new_position);
-        return word;
-      }
+    var new_position = [current_position[0] + direction[0], current_position[1] + direction[1]];
+    if( insideMatrix(new_position) && !word.beenThere(new_position)){
+      word.positions.push(new_position);
+      return word;
     }
-    if (move === 'up-right'){
-      new_position = [current_position[0] + 1, current_position[1] - 1];
-      if(new_position[1] > -1 && new_position[0] < dimension && !word.beenThere(new_position)){
-        word.positions.push(new_position);
-        return word;
-      }
-    }
-    if ( move === 'right' ){
-      new_position = [current_position[0] + 1, current_position[1]];
-      if(new_position[0] < dimension && !word.beenThere(new_position)){
-        word.positions.push(new_position);
-        return word;
-      }
-    }
-    if ( move === 'right-down' ){
-      new_position = [current_position[0] + 1, current_position[1] + 1];
-      if(new_position[0] < dimension && new_position[1] < dimension && !word.beenThere(new_position)){
-        word.positions.push(new_position);
-        return word;
-      }
-    }
-    if (move === 'down'){
-      new_position = [current_position[0], current_position[1] + 1];
-      if(new_position[1] < dimension && !word.beenThere(new_position)){ 
-        word.positions.push(new_position);
-        return word;
-      }
-    }
-    if (move === 'down-left'){
-      new_position = [current_position[0] - 1, current_position[1] + 1];
-      if(new_position[1] < dimension && new_position[0] > -1 && !word.beenThere(new_position)){ 
-        word.positions.push(new_position);
-        return word;
-      }
-    }
-    if ( move === 'left' ){
-      new_position = [current_position[0] - 1, current_position[1]];
-      if(new_position[0] > -1 && !word.beenThere(new_position)){
-        word.positions.push(new_position);
-        return word;
-      }
-    }
-    if ( move === 'left-up' ){
-      new_position = [current_position[0] - 1, current_position[1] - 1];
-      if(new_position[0] > -1 && new_position[1] > -1 && !word.beenThere(new_position)){
-        word.positions.push(new_position);
-        return word;
-      }
-    }
-    return undefined;
+  }
+   
+  function insideMatrix(position){
+    return (position[0] > -1 && position[1] > -1 && position[0] < dimension && position[1] < dimension );
   }
 
   function spread(words, word){
-    var directions = ['up', 'up-right', 'right', 'right-down', 'down', 'down-left', 'left', 'left-up'];
-    directions.forEach(function(d){
-      var candidate = move( new Word(word.positions), d );
+    var directions = {
+      'up':         [ 0, -1], 
+      'up-right':   [ 1, -1],
+      'right':      [ 1,  0],
+      'right-down': [ 1,  1],
+      'down':       [ 0,  1],
+      'down-left':  [-1,  1], 
+      'left':       [-1,  0], 
+      'left-up':    [-1, -1]
+    };
+    for(d in directions){
+      var candidate = move( new Word(word.positions), directions[d] );
       if( candidate != undefined ){
         words.push( candidate );
       }
-    });
+    }
   }
 
   function fetchEnglishDictionary(){
