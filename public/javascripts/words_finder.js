@@ -153,7 +153,7 @@ var WordsFinder = function(){
     var length = positions.length;
     var letters = [];
     for(var i = 0; i < length; i += 2){
-      letters.push( $(inputs[parseInt(positions[i], 10) + 5 * parseInt(positions[i+1], 10)]) );
+      letters.push( $(inputs[parseInt(positions[i], 10) + dimension * parseInt(positions[i+1], 10)]) );
     }
     return letters;
   }
