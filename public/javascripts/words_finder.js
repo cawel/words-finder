@@ -30,15 +30,22 @@ var WordsFinderApp = function(){
     });
 
     $("#finder").click(function(event){
-      // can't make it work properly :(
-      // $('.loading').show();
 
-      var timer = BenchmarkTimer();
-      timer.start();
-      var words = findWords();
-      timer.stop();
-      showWordsFound(words);
-      $('.benchmark').html('Results found in: ' + timer.getTime() + ' ms');
+      $('#randomizer').attr('disabled', 'disabled');
+      $('#finder').attr('disabled', 'disabled');
+      $('.loading').show();
+
+      setTimeout(function(){
+        var timer = BenchmarkTimer();
+        timer.start();
+        var words = findWords();
+        timer.stop();
+        showWordsFound(words);
+        $('.loading').hide();
+        $('.benchmark').html('Results found in: ' + timer.getTime() + ' ms');
+        $('#finder').removeAttr('disabled');
+        $('#randomizer').removeAttr('disabled');
+      }, 10);
 
       return false;
     });
