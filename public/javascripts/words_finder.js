@@ -13,6 +13,17 @@ var WordsFinderApp = function(){
   var dimension;
   var dict_en = {};
 
+  var directions = {
+    'up':         [ 0, -1], 
+    'up-right':   [ 1, -1],
+    'right':      [ 1,  0],
+    'right-down': [ 1,  1],
+    'down':       [ 0,  1],
+    'down-left':  [-1,  1], 
+    'left':       [-1,  0], 
+    'left-up':    [-1, -1]
+  };
+
   var initialize = function(){
     $("input").attr("maxlength", 1);
     fetchEnglishDictionary();
@@ -189,16 +200,6 @@ var WordsFinderApp = function(){
   }
 
   function spread(words, word){
-    var directions = {
-      'up':         [ 0, -1], 
-      'up-right':   [ 1, -1],
-      'right':      [ 1,  0],
-      'right-down': [ 1,  1],
-      'down':       [ 0,  1],
-      'down-left':  [-1,  1], 
-      'left':       [-1,  0], 
-      'left-up':    [-1, -1]
-    };
     for(d in directions){
       var candidate = move( Word(word.getPositions()), directions[d] );
       if( candidate != undefined ){
