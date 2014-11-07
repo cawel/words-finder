@@ -142,7 +142,7 @@ var WordsFinder = function(){
     var list = $('.words');
     var count = words.length;
     words.forEach(function(word){
-      list.append("<span data-positions='"+ word.positions.toString().replace(/,/g, '') +"'>" + word.getLetters(matrix) + '</span>');
+      list.append("<span data-positions='"+ word.getPositions().toString().replace(/,/g, '') +"'>" + word.getLetters(matrix) + '</span>');
       words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
     });
   }
@@ -193,7 +193,7 @@ var WordsFinder = function(){
       'left-up':    [-1, -1]
     };
     for(d in directions){
-      var candidate = move( Word(word.positions), directions[d] );
+      var candidate = move( Word(word.getPositions()), directions[d] );
       if( candidate != undefined ){
         words.push( candidate );
       }
@@ -214,51 +214,50 @@ var WordsFinder = function(){
 };
 
 
-function Word(positions){
-  this.positions = positions.slice(0);
-  this.letters;
-  this.getPositions = function(){
-    return this.positions;
+function Word(pos){
+  var positions = pos.slice(0);
+  var getPositions = function(){
+    return positions;
   };
-  this.addPosition = function(position){
-    this.positions.push(position);
+  var addPosition = function(position){
+    positions.push(position);
   };
-  this.getLastPosition = function(){
-    return this.positions[this.positions.length - 1];
+  var getLastPosition = function(){
+    return positions[positions.length - 1];
   };
-  this.fillWithLetters = function(matrix){
-    var chars = this.positions.map(function(e){
+  var fillWithLetters = function(matrix){
+    var chars = positions.map(function(e){
       return matrix[e[0]][e[1]];
     });
     return chars.join('');
   };
-  this.getLetters = function(matrix){
+  var getLetters = function(matrix){
     if(!this.letters){
       this.letters = this.fillWithLetters(matrix);
     }
     return this.letters;
   };
-  this.beenThere = function(position){
+  var beenThere = function(position){
     var found = false;
-    this.positions.forEach(function(e){
+    positions.forEach(function(e){
       if(e[0] == position[0] && e[1] == position[1]){
         found = true;
       }
     });
     return found;
   };
-  this.longEnough = function(){
-    return this.positions.length > 2;
+  var longEnough = function(){
+    return positions.length > 2;
   };
 
   // export public interface
   return {
-    positions:        this.positions,
-    addPosition:      this.addPosition,
-    getLastPosition:  this.getLastPosition,
-    fillWithLetters:  this.fillWithLetters,
-    getLetters:       this.getLetters,
-    beenThere:        this.beenThere,
-    longEnough:       this.longEnough
+    getPositions:     getPositions,
+    addPosition:      addPosition,
+    getLastPosition:  getLastPosition,
+    fillWithLetters:  fillWithLetters,
+    getLetters:       getLetters,
+    beenThere:        beenThere,
+    longEnough:       longEnough
   };
 }
