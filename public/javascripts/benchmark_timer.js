@@ -1,17 +1,20 @@
 var BenchmarkTimer = function() {
 
+  var startedAt;
+  var stoppedAt; 
+
   var start = function() {
-    this.stoppedAt = null;
-    this.startedAt = new Date();
+    stoppedAt = null;
+    startedAt = new Date();
   };
 
   var stop = function() {
-    this.stoppedAt = new Date();
+    stoppedAt = new Date();
   };
 
   var getTime = function() {
-    if (!this.stoppedAt) { this.stop(); }
-    return this.stoppedAt.getTime() - this.startedAt.getTime();
+    if (!stoppedAt) { stop(); }
+    return stoppedAt.getTime() - startedAt.getTime();
   };
 
   // exporting public interface
