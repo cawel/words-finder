@@ -1,3 +1,5 @@
+"use strict";
+
 $( document ).ready(function(){
 
   var app = WordsFinderApp();
@@ -89,8 +91,8 @@ var WordsFinderApp = function(){
 
   function findAllLetterCombinations(){
     var words = [];
-    for(i = 0; i < dimension; i++){
-      for(j = 0; j < dimension; j++){
+    for(var i = 0; i < dimension; i++){
+      for(var j = 0; j < dimension; j++){
         spread( words, Word([[i, j]]) );
       }
     }
@@ -198,7 +200,7 @@ var WordsFinderApp = function(){
   }
 
   function spread(words, word){
-    for(d in directions){
+    for(var d in directions){
       var candidate = move( Word(word.getPositions()), directions[d] );
       if( candidate != undefined ){
         words.push( candidate );
