@@ -44,6 +44,7 @@ var WordsFinderApp = function(){
 
       $('#randomizer').attr('disabled', 'disabled');
       $('#finder').attr('disabled', 'disabled');
+      $('.results').hide();
       $('.loading').show();
 
       setTimeout(function(){
