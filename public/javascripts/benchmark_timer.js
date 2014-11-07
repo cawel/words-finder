@@ -1,6 +1,4 @@
 var BenchmarkTimer = function() {
-  var startedAt = null;
-  var stoppedAt = null;
 
   var start = function() {
     this.stoppedAt = null;
@@ -16,7 +14,7 @@ var BenchmarkTimer = function() {
     return this.stoppedAt.getTime() - this.startedAt.getTime();
   };
 
-  // exporting the module interface
+  // exporting public interface
   return {
     start: start, 
     stop: stop, 
