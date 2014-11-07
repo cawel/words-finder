@@ -24,3 +24,4 @@ The source for the English words list is the [12Dicts by Alan Beale](http://word
 I asked a few people for a code review. Here are the people I want to thank:
 
 * [Mathieu Bérubé](https://github.com/mberube)
+* [Matthieu Tanguay-Carel](https://github.com/matstc)
