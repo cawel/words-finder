@@ -9,11 +9,11 @@ $( document ).ready(function(){
 
 
 var WordsFinderApp = function(){
-  var letterGrid;
+  var lettersGrid;
 
   var initialize = function(){
     $("input").attr("maxlength", 1);
-    letterGrid = LetterGrid();
+    lettersGrid = LettersGrid();
     fetchEnglishReferenceWordsList();
     registerEventListeners();
   };
@@ -23,7 +23,7 @@ var WordsFinderApp = function(){
     $("#randomizer").click(function(event){
       $('.results').hide();
       $.makeArray($('input')).forEach(function(el){
-        $(el).val( letterGrid.randomLetter() );
+        $(el).val( lettersGrid.randomLetter() );
       });
     });
 
@@ -56,7 +56,7 @@ var WordsFinderApp = function(){
   function findWords(){
     var timer = BenchmarkTimer();
     timer.start();
-    var words = letterGrid.findWords();
+    var words = lettersGrid.findWords();
     timer.stop();
     showWordsFound(words);
 
@@ -78,7 +78,7 @@ var WordsFinderApp = function(){
     var length = positions.length;
     var letterElements = [];
     for(var i = 0; i < length; i += 2){
-      letterElements.push( $(inputs[parseInt(positions[i], 10) + letterGrid.getDimension() * parseInt(positions[i+1], 10)]) );
+      letterElements.push( $(inputs[parseInt(positions[i], 10) + lettersGrid.getDimension() * parseInt(positions[i+1], 10)]) );
     }
     return letterElements;
   }
@@ -91,7 +91,7 @@ var WordsFinderApp = function(){
     var list = $('.words');
     var count = words.length;
     words.forEach(function(word){
-      var word_el = $('<span />').data('positions', word.getPositions().toString().replace(/,/g, '') ).html( word.getLetters(letterGrid.getLetterMatrix()) );
+      var word_el = $('<span />').data('positions', word.getPositions().toString().replace(/,/g, '') ).html( word.getLetters(lettersGrid.getLetterMatrix()) );
       list.append(word_el);
       words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
     });
@@ -99,7 +99,7 @@ var WordsFinderApp = function(){
 
   function fetchEnglishReferenceWordsList(){
     $.get('/dict_en', function(response){
-      letterGrid.setReferenceWordsList(response);
+      lettersGrid.setReferenceWordsList(response);
       $('#finder').removeAttr('disabled');
     });
   }
@@ -111,7 +111,7 @@ var WordsFinderApp = function(){
 };
 
 
-function LetterGrid(){
+function LettersGrid(){
   var lettersMatrix;
   var alphabet = 'abcdefghijklmnopqrstuvwxyz';
   var dimension = 5;
