@@ -14,7 +14,7 @@ var WordsFinderApp = function(){
   var initialize = function(){
     $("input").attr("maxlength", 1);
     letterGrid = LetterGrid();
-    fetchEnglishDictionary();
+    fetchEnglishReferenceWordsList();
     registerEventListeners();
   };
 
@@ -92,7 +92,7 @@ var WordsFinderApp = function(){
     });
   }
 
-  function fetchEnglishDictionary(){
+  function fetchEnglishReferenceWordsList(){
     $.get('/dict_en', function(response){
       letterGrid.setReferenceWordsList(response);
       $('#finder').removeAttr('disabled');
