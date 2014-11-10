@@ -19,7 +19,6 @@ var WordsFinderApp = function(){
   };
 
   var registerEventListeners = function(){
-
     $("#randomizer").click(function(event){
       $('.results').hide();
       $.makeArray($('input')).forEach(function(el){
@@ -34,7 +33,15 @@ var WordsFinderApp = function(){
       $('.loading').show();
 
       setTimeout(function(){
-        findWordsInLettersGrid();
+        var words;
+        var elapsedTime = trackTime(function(){
+          words = lettersGrid.findWords();
+        });
+        showWordsFound(words);
+        $('.loading').hide();
+        $('.benchmark span').html( elapsedTime );
+        $('#finder').removeAttr('disabled');
+        $('#randomizer').removeAttr('disabled');
       }, 10);
 
       return false;
@@ -53,17 +60,12 @@ var WordsFinderApp = function(){
     });
   };
 
-  function findWordsInLettersGrid(){
+  function trackTime(callback){
     var timer = BenchmarkTimer();
     timer.start();
-    var words = lettersGrid.findWords();
+    var results = callback.call();
     timer.stop();
-    showWordsFound(words);
-
-    $('.loading').hide();
-    $('.benchmark span').html( timer.getTime() );
-    $('#finder').removeAttr('disabled');
-    $('#randomizer').removeAttr('disabled');
+    return results;
   }
 
   function toggleLettersHighlight(positions, highlight){
