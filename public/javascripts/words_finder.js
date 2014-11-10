@@ -274,11 +274,10 @@ function LettersCombination(pos){
     return positions[positions.length - 1];
   };
 
-  var getLetters = function(matrix){
-    var chars = positions.map(function(e){
-      return matrix[e[0]][e[1]];
-    });
-    return chars.join('');
+  var getLetters = function(lettersMatrix){
+    return positions.reduce(function(letters, position){
+      return letters + lettersMatrix[position[0]][position[1]];
+    }, "");
   };
 
   var positionExists = function(position){
