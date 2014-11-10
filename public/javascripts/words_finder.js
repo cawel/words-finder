@@ -137,6 +137,7 @@ function LetterGrid(){
   }
 
   function findWords(){
+    letterMatrix = null;
     var words = findAllLetterCombinations();
     words = removeLongWords(words);
     words = removeDupes(words);
