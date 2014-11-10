@@ -61,6 +61,24 @@ var WordsFinderApp = function(){
     });
   };
 
+  function toggleLettersHighlight(positions, highlight){
+    positions = positions.toString();
+    fetchLetterElements( positions ).map(function(el){
+      el.toggleClass('highlight-letter', highlight);
+    });
+  }
+
+  function fetchLetterElements(positions){
+    var inputs = $('input');
+    var length = positions.length;
+    var letterElements = [];
+    for(var i = 0; i < length; i += 2){
+      letterElements.push( $(inputs[parseInt(positions[i], 10) + letterGrid.getDimension() * parseInt(positions[i+1], 10)]) );
+    }
+    return letterElements;
+  }
+
+
   function showWordsFound(words){
     $('.results').show();
     $('.results h2 span').html(words.length);
@@ -108,6 +126,10 @@ function LetterGrid(){
   function randomLetter(){
     var random = Math.ceil( (Math.random() * (alphabet.length - 1)) );
     return alphabet[random];
+  }
+
+  function getDimension(){
+    return dimension;
   }
 
   function setReferenceWordsList(wordsList){
@@ -198,23 +220,6 @@ function LetterGrid(){
     });
   }
 
-  function fetchLetterElements(positions){
-    var inputs = $('input');
-    var length = positions.length;
-    var letterElements = [];
-    for(var i = 0; i < length; i += 2){
-      letterElements.push( $(inputs[parseInt(positions[i], 10) + dimension * parseInt(positions[i+1], 10)]) );
-    }
-    return letterElements;
-  }
-
-  function toggleLettersHighlight(positions, highlight){
-    positions = positions.toString();
-    fetchLetterElements( positions ).map(function(el){
-      el.toggleClass('highlight-letter', highlight);
-    });
-  }
-
   function move(word, direction){
     var current_position = word.getLastPosition();
     var new_position = [current_position[0] + direction[0], current_position[1] + direction[1]];
@@ -242,7 +247,8 @@ function LetterGrid(){
     setReferenceWordsList:  setReferenceWordsList,
     getLetterMatrix:        getLetterMatrix,
     findWords:              findWords,
-    randomLetter:           randomLetter
+    randomLetter:           randomLetter,
+    getDimension:           getDimension
   };
 }
 
