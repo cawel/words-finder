@@ -268,18 +268,11 @@ function Word(pos){
     return positions[positions.length - 1];
   };
 
-  var fillWithLetters = function(matrix){
+  var getLetters = function(matrix){
     var chars = positions.map(function(e){
       return matrix[e[0]][e[1]];
     });
     return chars.join('');
-  };
-
-  var getLetters = function(matrix){
-    if(!this.letters){
-      this.letters = this.fillWithLetters(matrix);
-    }
-    return this.letters;
   };
 
   var beenThere = function(position){
@@ -301,7 +294,6 @@ function Word(pos){
     getPositions:     getPositions,
     addPosition:      addPosition,
     getLastPosition:  getLastPosition,
-    fillWithLetters:  fillWithLetters,
     getLetters:       getLetters,
     beenThere:        beenThere,
     longEnough:       longEnough
