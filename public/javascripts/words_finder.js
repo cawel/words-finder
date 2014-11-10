@@ -34,7 +34,7 @@ var WordsFinderApp = function(){
       $('.loading').show();
 
       setTimeout(function(){
-        findWords();
+        findWordsInLettersGrid();
       }, 10);
 
       return false;
@@ -53,7 +53,7 @@ var WordsFinderApp = function(){
     });
   };
 
-  function findWords(){
+  function findWordsInLettersGrid(){
     var timer = BenchmarkTimer();
     timer.start();
     var words = lettersGrid.findWords();
