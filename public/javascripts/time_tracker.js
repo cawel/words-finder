@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-var BenchmarkTimer = function() {
+var TimeTracker = function() {
 
   var startedAt;
   var stoppedAt; 
@@ -19,10 +19,15 @@ var BenchmarkTimer = function() {
     return stoppedAt.getTime() - startedAt.getTime();
   };
 
+  var trackTime = function(callback){
+    start();
+    callback.call();
+    stop();
+    return getTime();
+  };
+
   // exporting public interface
   return {
-    start: start, 
-    stop: stop, 
-    getTime: getTime
+    trackTime: trackTime
   };
 };

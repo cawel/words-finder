@@ -34,7 +34,7 @@ var WordsFinderApp = function(){
 
       setTimeout(function(){
         var words;
-        var elapsedTime = trackTime(function(){
+        var elapsedTime = TimeTracker().trackTime(function(){
           words = lettersGrid.findWords();
         });
         showWordsFound(words);
@@ -59,14 +59,6 @@ var WordsFinderApp = function(){
       toggleLettersHighlight( el.data('positions'), false);
     });
   };
-
-  function trackTime(callback){
-    var timer = BenchmarkTimer();
-    timer.start();
-    var results = callback.call();
-    timer.stop();
-    return results;
-  }
 
   function toggleLettersHighlight(positions, highlight){
     positions = positions.toString();
