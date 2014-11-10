@@ -34,15 +34,7 @@ var WordsFinderApp = function(){
       $('.loading').show();
 
       setTimeout(function(){
-        var timer = BenchmarkTimer();
-        timer.start();
-        var words = letterGrid.findWords();
-        timer.stop();
-        showWordsFound(words);
-        $('.loading').hide();
-        $('.benchmark span').html( timer.getTime() );
-        $('#finder').removeAttr('disabled');
-        $('#randomizer').removeAttr('disabled');
+        findWords();
       }, 10);
 
       return false;
@@ -60,6 +52,19 @@ var WordsFinderApp = function(){
       toggleLettersHighlight( el.data('positions'), false);
     });
   };
+
+  function findWords(){
+    var timer = BenchmarkTimer();
+    timer.start();
+    var words = letterGrid.findWords();
+    timer.stop();
+    showWordsFound(words);
+
+    $('.loading').hide();
+    $('.benchmark span').html( timer.getTime() );
+    $('#finder').removeAttr('disabled');
+    $('#randomizer').removeAttr('disabled');
+  }
 
   function toggleLettersHighlight(positions, highlight){
     positions = positions.toString();
