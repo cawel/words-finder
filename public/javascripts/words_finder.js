@@ -9,25 +9,11 @@ $( document ).ready(function(){
 
 
 var WordsFinderApp = function(){
-
-  var matrix;
-  var alphabet = 'abcdefghijklmnopqrstuvwxyz';
-  var dimension;
-  var dict_en = {};
-
-  var directions = {
-    'up':         [ 0, -1], 
-    'up-right':   [ 1, -1],
-    'right':      [ 1,  0],
-    'right-down': [ 1,  1],
-    'down':       [ 0,  1],
-    'down-left':  [-1,  1], 
-    'left':       [-1,  0], 
-    'left-up':    [-1, -1]
-  };
+  var letterGrid;
 
   var initialize = function(){
     $("input").attr("maxlength", 1);
+    letterGrid = LetterGrid();
     fetchEnglishDictionary();
     registerEventListeners();
   };
@@ -37,13 +23,11 @@ var WordsFinderApp = function(){
     $("#randomizer").click(function(event){
       $('.results').hide();
       $.makeArray($('input')).forEach(function(el){
-        var random = Math.ceil( (Math.random() * (alphabet.length - 1)) );
-        $(el).val( alphabet[random] );
+        $(el).val( letterGrid.randomLetter() );
       });
     });
 
     $("#finder").click(function(event){
-
       $('#randomizer').attr('disabled', 'disabled');
       $('#finder').attr('disabled', 'disabled');
       $('.results').hide();
@@ -52,7 +36,7 @@ var WordsFinderApp = function(){
       setTimeout(function(){
         var timer = BenchmarkTimer();
         timer.start();
-        var words = findWords();
+        var words = letterGrid.findWords();
         timer.stop();
         showWordsFound(words);
         $('.loading').hide();
@@ -77,9 +61,60 @@ var WordsFinderApp = function(){
     });
   };
 
-  function findWords(){
-    buildLetterMatrix();
+  function showWordsFound(words){
+    $('.results').show();
+    $('.results h2 span').html(words.length);
+    $('.words').empty();
+    var list = $('.words');
+    var count = words.length;
+    words.forEach(function(word){
+      var word_el = $('<span />').data('positions', word.getPositions().toString().replace(/,/g, '') ).html( word.getLetters(letterGrid.getLetterMatrix()) );
+      list.append(word_el);
+      words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
+    });
+  }
 
+  function fetchEnglishDictionary(){
+    $.get('/dict_en', function(response){
+      letterGrid.setReferenceWordsList(response);
+      $('#finder').removeAttr('disabled');
+    });
+  }
+
+  // export public interface
+  return {
+    initialize: initialize
+  };
+};
+
+
+function LetterGrid(){
+  var letterMatrix;
+  var alphabet = 'abcdefghijklmnopqrstuvwxyz';
+  var dimension = 5;
+  var referenceWordsList;
+
+  var directions = {
+    'up':         [ 0, -1], 
+    'up-right':   [ 1, -1],
+    'right':      [ 1,  0],
+    'right-down': [ 1,  1],
+    'down':       [ 0,  1],
+    'down-left':  [-1,  1], 
+    'left':       [-1,  0], 
+    'left-up':    [-1, -1]
+  };
+
+  function randomLetter(){
+    var random = Math.ceil( (Math.random() * (alphabet.length - 1)) );
+    return alphabet[random];
+  }
+
+  function setReferenceWordsList(wordsList){
+    referenceWordsList = wordsList;
+  }
+
+  function findWords(){
     var words = findAllLetterCombinations();
     words = removeLongWords(words);
     words = removeDupes(words);
@@ -106,16 +141,23 @@ var WordsFinderApp = function(){
     return words;
   }
 
+  function getLetterMatrix(){
+    if(!letterMatrix){
+      buildLetterMatrix();
+    }
+    return letterMatrix;
+  }
+
   function buildLetterMatrix(){
     var letters = jQuery.makeArray($('input')).map(function(el){
       return $(el).val();
     });
-    dimension = Math.sqrt( letters.length );
-    matrix = new Array(dimension);
+    // dimension = Math.sqrt( letters.length );
+    letterMatrix = new Array(dimension);
     for(var i=0; i < dimension; i++){
-      matrix[i] = new Array(dimension);
+      letterMatrix[i] = new Array(dimension);
       for(var j=0; j < dimension; j++){
-        matrix[i][j] = letters[j*dimension + i];
+        letterMatrix[i][j] = letters[j*dimension + i];
       }
     }
   }
@@ -130,7 +172,7 @@ var WordsFinderApp = function(){
     var set = [];
     var word;
     return words.filter(function(item) {
-      word = item.getLetters(matrix);
+      word = item.getLetters(getLetterMatrix());
       if( set.indexOf(word) == -1 ) {
         set.push( word );
         return true;
@@ -142,13 +184,13 @@ var WordsFinderApp = function(){
 
   function keepExistingWords(words){
     return words.filter(function(item) {
-      return dict_en.indexOf(item.getLetters(matrix)) != -1;
+      return referenceWordsList.indexOf(item.getLetters(getLetterMatrix())) != -1;
     });
   }
 
   function sortWordsList(words){
     return words.sort(function(item1, item2){
-      if ( item1.getLetters(matrix) > item2.getLetters(matrix) ){
+      if ( item1.getLetters(getLetterMatrix()) > item2.getLetters(getLetterMatrix()) ){
         return 1;
       }else{
         return -1;
@@ -156,20 +198,7 @@ var WordsFinderApp = function(){
     });
   }
 
-  function showWordsFound(words){
-    $('.results').show();
-    $('.results h2 span').html(words.length);
-    $('.words').empty();
-    var list = $('.words');
-    var count = words.length;
-    words.forEach(function(word){
-      var word_el = $('<span />').data('positions', word.getPositions().toString().replace(/,/g, '') ).html( word.getLetters(matrix) );
-      list.append(word_el);
-      words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
-    });
-  }
-
-  function fetchLetterElements( positions ){
+  function fetchLetterElements(positions){
     var inputs = $('input');
     var length = positions.length;
     var letterElements = [];
@@ -179,7 +208,7 @@ var WordsFinderApp = function(){
     return letterElements;
   }
 
-  function toggleLettersHighlight( positions, highlight ){
+  function toggleLettersHighlight(positions, highlight){
     positions = positions.toString();
     fetchLetterElements( positions ).map(function(el){
       el.toggleClass('highlight-letter', highlight);
@@ -208,43 +237,45 @@ var WordsFinderApp = function(){
     }
   }
 
-  function fetchEnglishDictionary(){
-    $.get('/dict_en', function(response){
-      dict_en = response;
-      $('#finder').removeAttr('disabled');
-    });
-  }
-
   // export public interface
   return {
-    initialize: initialize
+    setReferenceWordsList:  setReferenceWordsList,
+    getLetterMatrix:        getLetterMatrix,
+    findWords:              findWords,
+    randomLetter:           randomLetter
   };
-};
+}
 
 
 function Word(pos){
   var positions = pos.slice(0);
+
   var getPositions = function(){
     return positions;
   };
+
   var addPosition = function(position){
     positions.push(position);
   };
+
   var getLastPosition = function(){
     return positions[positions.length - 1];
   };
+
   var fillWithLetters = function(matrix){
     var chars = positions.map(function(e){
       return matrix[e[0]][e[1]];
     });
     return chars.join('');
   };
+
   var getLetters = function(matrix){
     if(!this.letters){
       this.letters = this.fillWithLetters(matrix);
     }
     return this.letters;
   };
+
   var beenThere = function(position){
     var found = false;
     positions.forEach(function(e){
@@ -254,6 +285,7 @@ function Word(pos){
     });
     return found;
   };
+
   var longEnough = function(){
     return positions.length > 2;
   };
