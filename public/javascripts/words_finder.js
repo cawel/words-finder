@@ -224,7 +224,7 @@ function LetterGrid(){
   function move(word, direction){
     var current_position = word.getLastPosition();
     var new_position = [current_position[0] + direction[0], current_position[1] + direction[1]];
-    if( insideMatrix(new_position) && !word.beenThere(new_position)){
+    if( insideMatrix(new_position) && !word.positionExists(new_position)){
       word.addPosition(new_position);
       return word;
     }
@@ -276,14 +276,13 @@ function LettersCombination(pos){
     return chars.join('');
   };
 
-  var beenThere = function(position){
-    var found = false;
+  var positionExists = function(position){
     positions.forEach(function(e){
       if(e[0] == position[0] && e[1] == position[1]){
-        found = true;
+        return true;
       }
     });
-    return found;
+    return false;
   };
 
   var longEnough = function(){
@@ -296,7 +295,7 @@ function LettersCombination(pos){
     addPosition:      addPosition,
     getLastPosition:  getLastPosition,
     getLetters:       getLetters,
-    beenThere:        beenThere,
+    positionExists:   positionExists,
     longEnough:       longEnough
   };
 }
