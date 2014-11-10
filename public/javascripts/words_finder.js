@@ -282,12 +282,9 @@ function LettersCombination(pos){
   };
 
   var positionExists = function(position){
-    positions.forEach(function(e){
-      if(e[0] == position[0] && e[1] == position[1]){
-        return true;
-      }
+    return positions.some(function(e){
+      return (e[0] == position[0] && e[1] == position[1]);
     });
-    return false;
   };
 
   var longEnough = function(){
