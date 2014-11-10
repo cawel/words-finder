@@ -107,7 +107,7 @@ var WordsFinderApp = function(){
 
 
 function LetterGrid(){
-  var letterMatrix;
+  var lettersMatrix;
   var alphabet = 'abcdefghijklmnopqrstuvwxyz';
   var dimension = 5;
   var referenceWordsList;
@@ -137,7 +137,7 @@ function LetterGrid(){
   }
 
   function findWords(){
-    letterMatrix = null;
+    lettersMatrix = null;
     var combinations = findAllLettersCombinations();
     combinations = removeLongCombinations(combinations);
     combinations = removeDupes(combinations);
@@ -165,10 +165,10 @@ function LetterGrid(){
   }
 
   function getLetterMatrix(){
-    if(!letterMatrix){
+    if(!lettersMatrix){
       buildLetterMatrix();
     }
-    return letterMatrix;
+    return lettersMatrix;
   }
 
   function buildLetterMatrix(){
@@ -176,11 +176,11 @@ function LetterGrid(){
       return $(el).val();
     });
     // dimension = Math.sqrt( letters.length );
-    letterMatrix = new Array(dimension);
+    lettersMatrix = new Array(dimension);
     for(var i=0; i < dimension; i++){
-      letterMatrix[i] = new Array(dimension);
+      lettersMatrix[i] = new Array(dimension);
       for(var j=0; j < dimension; j++){
-        letterMatrix[i][j] = letters[j*dimension + i];
+        lettersMatrix[i][j] = letters[j*dimension + i];
       }
     }
   }
