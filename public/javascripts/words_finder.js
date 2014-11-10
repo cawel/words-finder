@@ -27,21 +27,16 @@ var WordsFinderApp = function(){
     });
 
     $("#finder").click(function(event){
-      $('#randomizer').attr('disabled', 'disabled');
-      $('#finder').attr('disabled', 'disabled');
-      $('.results').hide();
-      $('.loading').show();
+      uiWaitingState(true);
 
       setTimeout(function(){
         var words;
         var elapsedTime = TimeTracker().trackTime(function(){
           words = lettersGrid.findWords();
         });
+        uiWaitingState(false);
         showWordsFound(words);
-        $('.loading').hide();
         $('.benchmark span').html( elapsedTime );
-        $('#finder').removeAttr('disabled');
-        $('#randomizer').removeAttr('disabled');
       }, 10);
 
       return false;
@@ -59,6 +54,19 @@ var WordsFinderApp = function(){
       toggleLettersHighlight( el.data('positions'), false);
     });
   };
+
+  function uiWaitingState(waiting){
+    if(waiting){
+      $('#randomizer').attr('disabled', 'disabled');
+      $('#finder').attr('disabled', 'disabled');
+      $('.results').hide();
+      $('.loading').show();
+    }else{
+      $('.loading').hide();
+      $('#finder').removeAttr('disabled');
+      $('#randomizer').removeAttr('disabled');
+    }
+  }
 
   function toggleLettersHighlight(positions, highlight){
     positions = positions.toString();
@@ -79,8 +87,8 @@ var WordsFinderApp = function(){
 
 
   function showWordsFound(words){
-    $('.results').show();
     $('.results h2 span').html(words.length);
+    $('.results').show();
     $('.words').empty();
     var list = $('.words');
     var count = words.length;
