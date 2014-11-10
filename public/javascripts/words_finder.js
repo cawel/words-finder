@@ -138,30 +138,30 @@ function LetterGrid(){
 
   function findWords(){
     letterMatrix = null;
-    var words = findAllLetterCombinations();
-    words = removeLongWords(words);
-    words = removeDupes(words);
-    words = keepExistingWords(words);
-    words = sortWordsList(words);
+    var combinations = findAllLettersCombinations();
+    combinations = removeLongCombinations(combinations);
+    combinations = removeDupes(combinations);
+    combinations = keepExistingWords(combinations);
+    combinations = sortCombinationsList(combinations);
 
-    return words;
+    return combinations;
   }
 
-  function findAllLetterCombinations(){
-    var words = [];
+  function findAllLettersCombinations(){
+    var combinations = [];
     for(var i = 0; i < dimension; i++){
       for(var j = 0; j < dimension; j++){
-        spread( words, Word([[i, j]]) );
+        spread( combinations, LettersCombination([[i, j]]) );
       }
     }
 
     // max of 4-letter words for now (otherwise too slow)
     for(i = 0; i < 2; i++){
-      words.forEach(function(e){
-        spread( words, e );
+      combinations.forEach(function(e){
+        spread(combinations, e);
       });
     }
-    return words;
+    return combinations;
   }
 
   function getLetterMatrix(){
@@ -185,16 +185,16 @@ function LetterGrid(){
     }
   }
 
-  function removeLongWords(words){
-    return words.filter(function(w){
+  function removeLongCombinations(combinations){
+    return combinations.filter(function(w){
       return w.longEnough();
     });
   }
 
-  function removeDupes(words){
+  function removeDupes(combinations){
     var set = [];
     var word;
-    return words.filter(function(item) {
+    return combinations.filter(function(item) {
       word = item.getLetters(getLetterMatrix());
       if( set.indexOf(word) == -1 ) {
         set.push( word );
@@ -205,14 +205,14 @@ function LetterGrid(){
     });
   }
 
-  function keepExistingWords(words){
-    return words.filter(function(item) {
+  function keepExistingWords(combinations){
+    return combinations.filter(function(item) {
       return referenceWordsList.indexOf(item.getLetters(getLetterMatrix())) != -1;
     });
   }
 
-  function sortWordsList(words){
-    return words.sort(function(item1, item2){
+  function sortCombinationsList(combinations){
+    return combinations.sort(function(item1, item2){
       if ( item1.getLetters(getLetterMatrix()) > item2.getLetters(getLetterMatrix()) ){
         return 1;
       }else{
@@ -234,11 +234,11 @@ function LetterGrid(){
     return (position[0] > -1 && position[1] > -1 && position[0] < dimension && position[1] < dimension );
   }
 
-  function spread(words, word){
+  function spread(combinations, combination){
     for(var d in directions){
-      var candidate = move( Word(word.getPositions()), directions[d] );
+      var candidate = move( LettersCombination(combination.getPositions()), directions[d] );
       if( candidate != undefined ){
-        words.push( candidate );
+        combinations.push( candidate );
       }
     }
   }
@@ -254,7 +254,7 @@ function LetterGrid(){
 }
 
 
-function Word(pos){
+function LettersCombination(pos){
   var positions = pos.slice(0);
 
   var getPositions = function(){
