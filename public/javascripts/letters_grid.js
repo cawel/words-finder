@@ -34,8 +34,8 @@ function LettersGrid(){
     lettersMatrix = null;
     var combinations = findAllLettersCombinations();
     combinations = removeLongCombinations(combinations);
-    combinations = removeDupes(combinations);
     combinations = keepExistingWords(combinations);
+    combinations = removeDupes(combinations);
     combinations = sortCombinationsList(combinations);
 
     return combinations;
@@ -92,7 +92,7 @@ function LettersGrid(){
     return combinations.filter(function(combination) {
       word = combination.getLetters( getLettersMatrix() );
       if( set.indexOf(word) == -1 ) {
-        set.push( word );
+        set.push(word);
         return true;
       }else{
         return false;
