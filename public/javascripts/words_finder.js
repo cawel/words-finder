@@ -70,21 +70,20 @@ var WordsFinderApp = function(){
 
   function toggleLettersHighlight(positions, highlight){
     positions = positions.toString();
-    fetchLetterElements( positions ).map(function(el){
+    getGridElements( positions ).map(function(el){
       el.toggleClass('highlight-letter', highlight);
     });
   }
 
-  function fetchLetterElements(positions){
+  function getGridElements(positions){
     var inputs = $('input');
     var length = positions.length;
-    var letterElements = [];
+    var gridElements = [];
     for(var i = 0; i < length; i += 2){
-      letterElements.push( $(inputs[parseInt(positions[i], 10) + lettersGrid.getDimension() * parseInt(positions[i+1], 10)]) );
+      gridElements.push( $(inputs[parseInt(positions[i], 10) + lettersGrid.getDimension() * parseInt(positions[i+1], 10)]) );
     }
-    return letterElements;
+    return gridElements;
   }
-
 
   function showWordsFound(words){
     $('.results h2 span').html(words.length);
