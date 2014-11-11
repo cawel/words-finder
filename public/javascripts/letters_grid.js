@@ -49,8 +49,8 @@ function LettersGrid(){
       }
     }
 
-    // max of 4-letter words for now (otherwise too slow)
-    for(i = 0; i < 2; i++){
+    // max of 5-letter words for now (otherwise too slow)
+    for(i = 0; i < 3; i++){
       var currentCombinations = combinations.slice(0);
       currentCombinations.forEach(function(c){
         combinations = combinations.concat( spread(c) );
