@@ -92,7 +92,7 @@ var WordsFinderApp = function(){
     var list = $('.words');
     var count = words.length;
     words.forEach(function(word){
-      var word_el = $('<span />').data('positions', word.getPositions().toString().replace(/,/g, '') ).html( word.getLetters(lettersGrid.getLetterMatrix()) );
+      var word_el = $('<span />').data('positions', word.getPositions().toString().replace(/,/g, '') ).html( word.getLetters(lettersGrid.getLettersMatrix()) );
       list.append(word_el);
       words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
     });
@@ -171,14 +171,14 @@ function LettersGrid(){
     return combinations;
   }
 
-  function getLetterMatrix(){
+  function getLettersMatrix(){
     if(!lettersMatrix){
-      buildLetterMatrix();
+      buildLettersMatrix();
     }
     return lettersMatrix;
   }
 
-  function buildLetterMatrix(){
+  function buildLettersMatrix(){
     var letters = jQuery.makeArray($('input')).map(function(el){
       return $(el).val();
     });
@@ -202,7 +202,7 @@ function LettersGrid(){
     var set = [];
     var word;
     return combinations.filter(function(combination) {
-      word = combination.getLetters( getLetterMatrix() );
+      word = combination.getLetters( getLettersMatrix() );
       if( set.indexOf(word) == -1 ) {
         set.push( word );
         return true;
@@ -214,13 +214,13 @@ function LettersGrid(){
 
   function keepExistingWords(combinations){
     return combinations.filter(function(item) {
-      return referenceWordsList.indexOf(item.getLetters(getLetterMatrix())) != -1;
+      return referenceWordsList.indexOf(item.getLetters(getLettersMatrix())) != -1;
     });
   }
 
   function sortCombinationsList(combinations){
     return combinations.sort(function(comb1, comb2){
-      if ( comb1.getLetters(getLetterMatrix()) > comb2.getLetters(getLetterMatrix()) ){
+      if ( comb1.getLetters(getLettersMatrix()) > comb2.getLetters(getLettersMatrix()) ){
         return 1;
       }else{
         return -1;
@@ -255,7 +255,7 @@ function LettersGrid(){
   // export public interface
   return {
     setReferenceWordsList:  setReferenceWordsList,
-    getLetterMatrix:        getLetterMatrix,
+    getLettersMatrix:       getLettersMatrix,
     findWords:              findWords,
     randomLetter:           randomLetter,
     getDimension:           getDimension
