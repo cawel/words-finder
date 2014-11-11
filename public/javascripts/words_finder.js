@@ -157,14 +157,15 @@ function LettersGrid(){
     var combinations = [];
     for(var i = 0; i < dimension; i++){
       for(var j = 0; j < dimension; j++){
-        spread( combinations, LettersCombination([[i, j]]) );
+        combinations = combinations.concat( spread( LettersCombination([[i, j]]) ));
       }
     }
 
     // max of 4-letter words for now (otherwise too slow)
     for(i = 0; i < 2; i++){
-      combinations.forEach(function(e){
-        spread(combinations, e);
+      var currentCombinations = combinations.slice(0);
+      currentCombinations.forEach(function(c){
+        combinations = combinations.concat( spread(c) );
       });
     }
     return combinations;
@@ -200,8 +201,8 @@ function LettersGrid(){
   function removeDupes(combinations){
     var set = [];
     var word;
-    return combinations.filter(function(item) {
-      word = item.getLetters(getLetterMatrix());
+    return combinations.filter(function(combination) {
+      word = combination.getLetters( getLetterMatrix() );
       if( set.indexOf(word) == -1 ) {
         set.push( word );
         return true;
@@ -218,8 +219,8 @@ function LettersGrid(){
   }
 
   function sortCombinationsList(combinations){
-    return combinations.sort(function(item1, item2){
-      if ( item1.getLetters(getLetterMatrix()) > item2.getLetters(getLetterMatrix()) ){
+    return combinations.sort(function(comb1, comb2){
+      if ( comb1.getLetters(getLetterMatrix()) > comb2.getLetters(getLetterMatrix()) ){
         return 1;
       }else{
         return -1;
@@ -240,13 +241,15 @@ function LettersGrid(){
     return (position[0] > -1 && position[1] > -1 && position[0] < dimension && position[1] < dimension );
   }
 
-  function spread(combinations, combination){
+  function spread(combination){
+    var spreadedCombinations = [];
     for(var d in directions){
       var candidate = move( LettersCombination(combination.getPositions()), directions[d] );
-      if( candidate != undefined ){
-        combinations.push( candidate );
+      if(candidate){
+        spreadedCombinations.push( candidate );
       }
     }
+    return spreadedCombinations;
   }
 
   // export public interface
