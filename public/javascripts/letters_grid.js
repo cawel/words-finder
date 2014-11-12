@@ -43,8 +43,8 @@ function LettersGrid(){
 
   function findAllLettersSequences(){
     var sequences = [];
-    for(var i = 0; i < dimension; i++){
-      for(var j = 0; j < dimension; j++){
+    for(var i = 0; i < getDimension(); i++){
+      for(var j = 0; j < getDimension(); j++){
         sequences = sequences.concat( radiatedSequences( [[i, j]] ));
       }
     }
@@ -81,10 +81,10 @@ function LettersGrid(){
       return $(el).val();
     });
     var lettersMatrix = [];
-    for(var i=0; i < dimension; i++){
-      lettersMatrix[i] = new Array(dimension);
-      for(var j=0; j < dimension; j++){
-        lettersMatrix[i][j] = letters[j*dimension + i];
+    for(var i=0; i < getDimension(); i++){
+      lettersMatrix[i] = new Array(getDimension());
+      for(var j=0; j < getDimension(); j++){
+        lettersMatrix[i][j] = letters[j*getDimension() + i];
       }
     }
     return lettersMatrix;
@@ -146,7 +146,7 @@ function LettersGrid(){
   }
    
   function insideMatrix(position){
-    return (position[0] > -1 && position[1] > -1 && position[0] < dimension && position[1] < dimension );
+    return (position[0] > -1 && position[1] > -1 && position[0] < getDimension() && position[1] < getDimension() );
   }
 
   function addLetter(sequence, direction){
