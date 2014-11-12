@@ -1,6 +1,6 @@
 'use strict';
 
-function LettersCombination(pos){
+function LettersSequence(pos){
   var positions = pos.slice(0);
 
   var getPositions = function(){
