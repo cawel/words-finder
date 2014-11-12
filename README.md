@@ -2,9 +2,11 @@
 
 ## Description
 
-You can either scatter letters in a ramdom fashion on a 5x5 matrix or type in letters yourself. Then you click a button to find all the existing words on the matrix. 
+You can either scatter letters in a ramdom fashion on the letters matrix or type in the letters yourself. Then you can click a button to find all the existing words in the letters matrix. 
 
 If you hover on one of the words found, its letters will highlight in the matrix.
+
+The app finds all words of 3 to 6 letters. I wish I could do up to 7 letters, but it's too slow. Could you do it? :)
 
 
 ## Screenshot
