@@ -45,14 +45,14 @@ function LettersGrid(){
     var combinations = [];
     for(var i = 0; i < dimension; i++){
       for(var j = 0; j < dimension; j++){
-        combinations = combinations.concat( spread( LettersCombination([[i, j]]) ));
+        combinations = combinations.concat( radiatedCombinations( LettersCombination([[i, j]]) ));
       }
     }
 
     // max of 5-letter words for now (otherwise too slow)
     for(i = 0; i < 3; i++){
       combinations = combinations.reduce(function(memo, c){
-        return memo.concat(spread(c));
+        return memo.concat( radiatedCombinations(c) );
       }, combinations);
     }
     return combinations;
@@ -134,12 +134,12 @@ function LettersGrid(){
     });
   }
 
-  function move(word, direction){
-    var current_position = word.getLastPosition();
+  function addLetter(combination, direction){
+    var current_position = combination.getLastPosition();
     var new_position = [current_position[0] + direction[0], current_position[1] + direction[1]];
-    if( insideMatrix(new_position) && !word.positionExists(new_position)){
-      word.addPosition(new_position);
-      return word;
+    if( insideMatrix(new_position) && !combination.positionExists(new_position)){
+      combination.addPosition(new_position);
+      return combination;
     }
   }
    
@@ -147,15 +147,15 @@ function LettersGrid(){
     return (position[0] > -1 && position[1] > -1 && position[0] < dimension && position[1] < dimension );
   }
 
-  function spread(combination){
-    var spreadedCombinations = [];
+  function radiatedCombinations(combination){
+    var combinations = [];
     for(var d in directions){
-      var candidate = move( LettersCombination(combination.getPositions()), directions[d] );
+      var candidate = addLetter( LettersCombination(combination.getPositions()), directions[d] );
       if(candidate){
-        spreadedCombinations.push( candidate );
+        combinations.push(candidate);
       }
     }
-    return spreadedCombinations;
+    return combinations;
   }
 
   // export public interface
