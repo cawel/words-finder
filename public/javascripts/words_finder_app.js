@@ -1,12 +1,4 @@
-"use strict";
-
-$( document ).ready(function(){
-
-  var app = WordsFinderApp();
-  app.initialize();
-
-});
-
+'use strict'; 
 
 var WordsFinderApp = function(){
   var lettersGrid;
