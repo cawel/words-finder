@@ -45,17 +45,28 @@ function LettersGrid(){
     var combinations = [];
     for(var i = 0; i < dimension; i++){
       for(var j = 0; j < dimension; j++){
-        combinations = combinations.concat( radiatedCombinations( LettersCombination([[i, j]]) ));
+        combinations = combinations.concat( radiatedCombinations( [[i, j]] ));
       }
     }
 
-    // max of 5-letter words for now (otherwise too slow)
-    for(i = 0; i < 3; i++){
-      combinations = combinations.reduce(function(memo, c){
-        return memo.concat( radiatedCombinations(c) );
-      }, combinations);
-    }
-    return combinations;
+    // max of 6-letter words for now (otherwise too slow)
+    var threeLetterWords = combinations.reduce(function(memo, c){
+      return memo.concat( radiatedCombinations(c.getPositions()) );
+    }, []);
+
+    var fourLetterWords = threeLetterWords.reduce(function(memo, c){
+      return memo.concat( radiatedCombinations(c.getPositions()) );
+    }, []);
+
+    var fiveLetterWords = fourLetterWords.reduce(function(memo, c){
+      return memo.concat( radiatedCombinations(c.getPositions()) );
+    }, []);
+
+    var sixLetterWords = fiveLetterWords.reduce(function(memo, c){
+      return memo.concat( radiatedCombinations(c.getPositions()) );
+    }, []);
+
+    return combinations.concat(threeLetterWords, fourLetterWords, fiveLetterWords, sixLetterWords);
   }
 
   function getLettersMatrix(){
@@ -147,10 +158,11 @@ function LettersGrid(){
     return (position[0] > -1 && position[1] > -1 && position[0] < dimension && position[1] < dimension );
   }
 
-  function radiatedCombinations(combination){
+  function radiatedCombinations(positions){
     var combinations = [];
+
     for(var d in directions){
-      var candidate = addLetter( LettersCombination(combination.getPositions()), directions[d] );
+      var candidate = addLetter( LettersCombination(positions), directions[d] );
       if(candidate){
         combinations.push(candidate);
       }
