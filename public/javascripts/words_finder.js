@@ -24,6 +24,7 @@ var WordsFinderApp = function(){
       $.makeArray($('input')).forEach(function(el){
         $(el).val( lettersGrid.randomLetter() );
       });
+      return false;
     });
 
     $("#finder").click(function(event){
@@ -46,12 +47,14 @@ var WordsFinderApp = function(){
       var el = $(event.target);
       el.addClass('highlight-word');
       toggleLettersHighlight( el.data('positions'), true);
+      return false;
     });
 
     $('.words').on('mouseleave', 'span', function(event){
       var el = $(event.target);
       el.removeClass('highlight-word');
       toggleLettersHighlight( el.data('positions'), false);
+      return false;
     });
   };
 
