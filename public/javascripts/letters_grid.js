@@ -179,5 +179,3 @@ function LettersGrid(){
     getDimension:           getDimension
   };
 }
-
-
