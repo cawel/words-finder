@@ -51,10 +51,9 @@ function LettersGrid(){
 
     // max of 5-letter words for now (otherwise too slow)
     for(i = 0; i < 3; i++){
-      var currentCombinations = combinations.slice(0);
-      currentCombinations.forEach(function(c){
-        combinations = combinations.concat( spread(c) );
-      });
+      combinations = combinations.reduce(function(memo, c){
+        return memo.concat(spread(c));
+      }, combinations);
     }
     return combinations;
   }
