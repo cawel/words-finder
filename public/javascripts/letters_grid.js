@@ -30,7 +30,8 @@ function LettersGrid(){
     referenceWordsList = wordsList.sort();
   }
 
-  function findWords(){
+  function findWords(letters){
+    lettersMatrix = buildLettersMatrix(letters);
     var sequences = findAllLettersSequences();
     sequences = removeLongSequences(sequences);
     sequences = keepExistingWords(sequences);
@@ -41,8 +42,6 @@ function LettersGrid(){
   }
 
   function findAllLettersSequences(){
-    lettersMatrix = null;
-
     var sequences = [];
     for(var i = 0; i < getDimension(); i++){
       for(var j = 0; j < getDimension(); j++){
@@ -71,17 +70,10 @@ function LettersGrid(){
   }
 
   function getLettersMatrix(){
-    if(!lettersMatrix){
-      lettersMatrix = buildLettersMatrix();
-    }
     return lettersMatrix;
   }
 
-  function buildLettersMatrix(){
-    var letters = jQuery.makeArray($('input')).map(function(el){
-      return $(el).val();
-    });
-
+  function buildLettersMatrix(letters){
     var lettersMatrix = [];
     for(var i = 0; i < getDimension(); i++){
       lettersMatrix[i] = [];

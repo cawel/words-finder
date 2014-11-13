@@ -24,8 +24,11 @@ var WordsFinderApp = function(){
 
       setTimeout(function(){
         var words;
+        var letters = jQuery.makeArray($('input')).map(function(el){
+          return $(el).val();
+        });
         var elapsedTime = TimeTracker().trackTime(function(){
-          words = lettersGrid.findWords();
+          words = lettersGrid.findWords(letters);
         });
         uiWaitingState(false);
         showWordsFound(words);
