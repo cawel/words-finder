@@ -18,7 +18,7 @@ function LettersGrid(){
   };
 
   function randomLetter(){
-    var random = Math.ceil( (Math.random() * (alphabet.length - 1)) );
+    var random = Math.floor( (Math.random() * (alphabet.length)) );
     return alphabet[random];
   }
 
