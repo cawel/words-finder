@@ -34,9 +34,9 @@ function LettersGrid(){
     lettersMatrix = buildLettersMatrix(letters);
     var sequences = findAllLettersSequences();
     sequences = removeLongSequences(sequences);
-    sequences = keepExistingWords(sequences);
-    sequences = removeDupes(sequences);
-    sequences = sortSequencesList(sequences);
+    sequences = keepExistingSequences(sequences);
+    sequences = removeDuplicateSequences(sequences);
+    sequences = sortSequences(sequences);
 
     return sequences;
   }
@@ -90,7 +90,7 @@ function LettersGrid(){
     });
   }
 
-  function removeDupes(sequences){
+  function removeDuplicateSequences(sequences){
     var set = [];
     var word;
     return sequences.filter(function(sequence) {
@@ -123,13 +123,13 @@ function LettersGrid(){
     return -1;
   }
 
-  function keepExistingWords(sequences){
+  function keepExistingSequences(sequences){
     return sequences.filter(function(sequence) {
       return binarySearch(referenceWordsList, sequence.getLetters(getLettersMatrix()) ) != -1;
     });
   }
 
-  function sortSequencesList(sequences){
+  function sortSequences(sequences){
     return sequences.sort(function(comb1, comb2){
       if ( comb1.getLetters(getLettersMatrix()) > comb2.getLetters(getLettersMatrix()) ){
         return 1;
