@@ -31,7 +31,6 @@ function LettersGrid(){
   }
 
   function findWords(){
-    lettersMatrix = null;
     var sequences = findAllLettersSequences();
     sequences = removeLongSequences(sequences);
     sequences = keepExistingWords(sequences);
@@ -42,6 +41,8 @@ function LettersGrid(){
   }
 
   function findAllLettersSequences(){
+    lettersMatrix = null;
+
     var sequences = [];
     for(var i = 0; i < getDimension(); i++){
       for(var j = 0; j < getDimension(); j++){
@@ -80,10 +81,11 @@ function LettersGrid(){
     var letters = jQuery.makeArray($('input')).map(function(el){
       return $(el).val();
     });
+
     var lettersMatrix = [];
-    for(var i=0; i < getDimension(); i++){
-      lettersMatrix[i] = new Array(getDimension());
-      for(var j=0; j < getDimension(); j++){
+    for(var i = 0; i < getDimension(); i++){
+      lettersMatrix[i] = [];
+      for(var j = 0; j < getDimension(); j++){
         lettersMatrix[i][j] = letters[j*getDimension() + i];
       }
     }
@@ -113,8 +115,8 @@ function LettersGrid(){
   function binarySearch(array, key) {
     var lo = 0,
     hi = array.length - 1,
-    mid,
-      element;
+    mid, element;
+
     while (lo <= hi) {
       mid = ((lo + hi) >> 1);
       element = array[mid];
