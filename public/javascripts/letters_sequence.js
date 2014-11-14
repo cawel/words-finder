@@ -31,8 +31,13 @@ function LettersSequence(pos){
     return positions.length > 2;
   };
 
+  var toJSON = function(){
+    return JSON.stringify(positions);
+  };
+
   // export public interface
   return {
+    toJSON:           toJSON,
     getPositions:     getPositions,
     addPosition:      addPosition,
     getLastPosition:  getLastPosition,

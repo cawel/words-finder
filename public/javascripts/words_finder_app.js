@@ -7,6 +7,7 @@ var WordsFinderApp = function(){
     $("input").attr("maxlength", 1);
     lettersGrid = LettersGrid();
     fetchEnglishReferenceWordsList();
+    fetchSerializedSequences();
     registerEventListeners();
   };
 
@@ -99,7 +100,17 @@ var WordsFinderApp = function(){
   function fetchEnglishReferenceWordsList(){
     $.get('/dict_en', function(response){
       lettersGrid.setReferenceWordsList(response);
+      console.log('Words list fetched from server.');
       $('#finder').removeAttr('disabled');
+    });
+  }
+
+  function fetchSerializedSequences(){
+    $.get('/3-4-5-6-7-letter-sequences.txt', function(response){
+      lettersGrid.setSerializedSequences(response);
+      console.log('Serialized sequences fetched from server.');
+      $('.words').html(':)');
+      $('.results').show();
     });
   }
 

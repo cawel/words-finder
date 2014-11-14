@@ -5,6 +5,8 @@ function LettersGrid(){
   var alphabet = 'abcdefghijklmnopqrstuvwxyz';
   var dimension = 5;
   var referenceWordsList;
+  var serializedSequences = null;
+  var sequences = null;
 
   var directions = {
     'up':         [ 0, -1], 
@@ -30,10 +32,26 @@ function LettersGrid(){
     referenceWordsList = wordsList.sort();
   }
 
+  function setSerializedSequences(sequences){
+    serializedSequences = JSON.parse(sequences, function(key, value){
+      if(value instanceof Array){
+        return value;
+      }else{
+        return LettersSequence(JSON.parse(value));
+      }
+    });
+  }
+
   function findWords(letters){
     lettersMatrix = buildLettersMatrix(letters);
-    var sequences = findAllLettersSequences();
-    sequences = removeLongSequences(sequences);
+    if(serializedSequences){
+      sequences = serializedSequences;
+    }else {
+      sequences = findAllLettersSequences();
+      sequences = removeLongSequences(sequences);
+      serializedSequences = sequences.slice(0);
+    }
+
     sequences = keepExistingSequences(sequences);
     sequences = removeDuplicateSequences(sequences);
     sequences = sortSequences(sequences);
@@ -167,6 +185,7 @@ function LettersGrid(){
   // export public interface
   return {
     setReferenceWordsList:  setReferenceWordsList,
+    setSerializedSequences: setSerializedSequences,
     getLettersMatrix:       getLettersMatrix,
     findWords:              findWords,
     randomLetter:           randomLetter,
