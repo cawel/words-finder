@@ -101,16 +101,14 @@ var WordsFinderApp = function(){
     $.get('/dict_en', function(response){
       lettersGrid.setReferenceWordsList(response);
       console.log('Words list fetched from server.');
-      $('#finder').removeAttr('disabled');
     });
   }
 
   function fetchSerializedSequences(){
-    $.get('/3-4-5-6-7-letter-sequences.txt', function(response){
+    $.get('/3-4-5-6-letter-sequences.txt', function(response){
       lettersGrid.setSerializedSequences(response);
       console.log('Serialized sequences fetched from server.');
-      $('.words').html(':)');
-      $('.results').show();
+      $('#finder').removeAttr('disabled');
     });
   }
 
