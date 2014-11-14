@@ -2,11 +2,9 @@
 
 ## Description
 
-You can either scatter letters in a ramdom fashion on the letters matrix or type in the letters yourself. Then you can click a button to find all the existing words in the letters matrix. 
+You can either scatter letters in a ramdom fashion on the letters matrix or type in the letters yourself. Then you can click a button to find all the existing words (from 3 up to 6 letters) in the letters matrix. 
 
 If you hover on one of the words found, its letters will highlight in the matrix.
-
-The app finds all words of 3 to 6 letters. I wish I could do up to 7 letters, but it's too slow. Could you do it? :)
 
 
 ## Screenshot
@@ -16,7 +14,12 @@ The app finds all words of 3 to 6 letters. I wish I could do up to 7 letters, bu
 
 ## Motivation
 
-This app was an exercice to experiment with JavaScript.
+This app was an exercice to experiment with pure JavaScript app in the browser, tested with Jasmine, with a focus on code readability.
+
+
+## Performance
+
+I wish I could find all words up to 7 letters, but it's too slow. Could you do it? :) In an attempt to optimize performance, the client fetches a large (3.5 MB) json array with all the possible paths to form a word of 3 up to 6 letters (there are 95 888 such paths). The same kind of file for paths up to 7 letters was 21 MB, thus too big to be downloaded on mobiles. Using that strategy makes it possible to find all words within half a second on a desktop – less than 3 seconds on mobiles.
 
 
 ## Thanks
