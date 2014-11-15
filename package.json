@@ -1,0 +1,27 @@
+{
+  "name": "words-finder",
+  "version": "0.0.1",
+  "description": "JavaScript app to find all the words in a matrix of letters.",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "karma": "~0.12.24",
+    "express": "~4.10.2",
+    "hamljs": "~0.6.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cawel/words-finder.git"
+  },
+  "author": "Martin Carel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cawel/words-finder/issues"
+  }
+}
