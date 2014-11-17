@@ -5,9 +5,7 @@ var WordsFinderApp = function(){
 
   var initialize = function(){
     $("input").attr("maxlength", 1);
-    lettersGrid = LettersGrid();
-    fetchEnglishReferenceWordsList();
-    fetchSerializedSequences();
+    lettersGrid = LettersGrid(5);
     registerEventListeners();
   };
 
@@ -23,18 +21,17 @@ var WordsFinderApp = function(){
     $("#finder").click(function(event){
       uiWaitingState(true);
 
-      setTimeout(function(){
-        var words;
-        var letters = jQuery.makeArray($('input')).map(function(el){
-          return $(el).val();
-        });
-        var elapsedTime = TimeTracker().trackTime(function(){
-          words = lettersGrid.findWords(letters);
-        });
+      var letters = jQuery.makeArray($('input')).map(function(el){
+        return $(el).val();
+      });
+      var elapsedTime = TimeTracker();
+      elapsedTime.start();
+      lettersGrid.findWords(letters, function(words){
+        elapsedTime.stop();
         uiWaitingState(false);
         showWordsFound(words);
-        $('.benchmark span').html( elapsedTime );
-      }, 10);
+        $('.benchmark span').html( elapsedTime.getTime() );
+      });
 
       return false;
     });
@@ -91,24 +88,9 @@ var WordsFinderApp = function(){
     var list = $('.words');
     var count = words.length;
     words.forEach(function(word){
-      var word_el = $('<span />').data('positions', word.getPositions().toString().replace(/,/g, '') ).html( word.getLetters(lettersGrid.getLettersMatrix()) );
+      var word_el = $('<span />').data('positions', word[1].toString().replace(/,/g, '') ).html( word[0] );
       list.append(word_el);
       words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
-    });
-  }
-
-  function fetchEnglishReferenceWordsList(){
-    $.get('/dict_en', function(response){
-      lettersGrid.setReferenceWordsList(response);
-      console.log('Words list fetched from server.');
-    });
-  }
-
-  function fetchSerializedSequences(){
-    $.get('/3-4-5-6-letter-sequences.txt', function(response){
-      lettersGrid.setSerializedSequences(response);
-      console.log('Serialized sequences fetched from server.');
-      $('#finder').removeAttr('disabled');
     });
   }
 

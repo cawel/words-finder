@@ -28,6 +28,9 @@ var TimeTracker = function() {
 
   // exporting public interface
   return {
+    start: start,
+    stop: stop,
+    getTime: getTime,
     trackTime: trackTime
   };
 };

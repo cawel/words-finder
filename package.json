@@ -9,7 +9,8 @@
   "dependencies": {
     "karma": "~0.12.24",
     "express": "~4.10.2",
-    "hamljs": "~0.6.2"
+    "hamljs": "~0.6.2",
+    "body-parser": "~1.9.2"
   },
   "devDependencies": {},
   "scripts": {
