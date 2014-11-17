@@ -4,7 +4,9 @@ var WordsFinderApp = function(){
   var lettersGrid;
 
   var initialize = function(){
-    $("input").attr("maxlength", 1);
+    getLettersElements().forEach(function(el){
+      $(el).attr("maxlength", 1);
+    });
     lettersGrid = LettersGrid(5);
     registerEventListeners();
   };
@@ -12,7 +14,7 @@ var WordsFinderApp = function(){
   var registerEventListeners = function(){
     $("#randomizer").click(function(event){
       $('.results').hide();
-      $.makeArray($('input')).forEach(function(el){
+      getLettersElements().forEach(function(el){
         $(el).val( lettersGrid.randomLetter() );
       });
       return false;
@@ -21,7 +23,7 @@ var WordsFinderApp = function(){
     $("#finder").click(function(event){
       uiWaitingState(true);
 
-      var letters = jQuery.makeArray($('input')).map(function(el){
+      var letters = getLettersElements().map(function(el){
         return $(el).val();
       });
       var elapsedTime = TimeTracker();
@@ -51,6 +53,10 @@ var WordsFinderApp = function(){
     });
   };
 
+  function getLettersElements(){
+    return $.makeArray($('input.letter'));
+  }
+
   function uiWaitingState(waiting){
     if(waiting){
       $('#randomizer').attr('disabled', 'disabled');
@@ -65,20 +71,17 @@ var WordsFinderApp = function(){
   }
 
   function toggleLettersHighlight(positions, highlight){
-    positions = positions.toString();
-    getGridElements( positions ).map(function(el){
+    positions = JSON.parse(positions);
+    getGridElements(positions).map(function(el){
       el.toggleClass('highlight-letter', highlight);
     });
   }
 
   function getGridElements(positions){
-    var inputs = $('input');
-    var length = positions.length;
-    var gridElements = [];
-    for(var i = 0; i < length; i += 2){
-      gridElements.push( $(inputs[parseInt(positions[i], 10) + lettersGrid.getDimension() * parseInt(positions[i+1], 10)]) );
-    }
-    return gridElements;
+    var inputs = getLettersElements();
+    return positions.map(function(position){
+      return $(inputs[position[0] + lettersGrid.getDimension() * position[1]]);
+    });
   }
 
   function showWordsFound(words){
@@ -88,7 +91,7 @@ var WordsFinderApp = function(){
     var list = $('.words');
     var count = words.length;
     words.forEach(function(word){
-      var word_el = $('<span />').data('positions', word[1].toString().replace(/,/g, '') ).html( word[0] );
+      var word_el = $('<span />').data('positions', JSON.stringify(word[1]) ).html( word[0] );
       list.append(word_el);
       words.indexOf(word) == (count - 1) ? list.append('.') : list.append(', ');
     });
