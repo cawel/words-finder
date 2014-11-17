@@ -2,7 +2,7 @@ var fs = require('fs');
 var LettersSequence = require('./letters_sequence');
 
 var lettersMatrix;
-var dimension = 5;
+var dimension;
 var referenceWordsList;
 var serializedSequences;
 var sequences;
@@ -74,7 +74,7 @@ function getLettersMatrix(){
 }
 
 function getDimension(){
-  return 5;
+  return dimension;
 }
 
 function removeLongSequences(sequences){
@@ -165,6 +165,7 @@ exports.initialize = function initialize(){
 };
 
 exports.findWords = function(lettersMat){
+  dimension = lettersMat.length;
   lettersMatrix = lettersMat;
 
   if(serializedSequences){
