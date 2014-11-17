@@ -23,12 +23,9 @@ var WordsFinderApp = function(){
     $("#finder").click(function(event){
       uiWaitingState(true);
 
-      var letters = getLettersElements().map(function(el){
-        return $(el).val();
-      });
       var elapsedTime = TimeTracker();
       elapsedTime.start();
-      lettersGrid.findWords(letters, function(words){
+      lettersGrid.findWords(getLettersMatrix(), function(words){
         elapsedTime.stop();
         uiWaitingState(false);
         showWordsFound(words);
@@ -52,6 +49,19 @@ var WordsFinderApp = function(){
       return false;
     });
   };
+
+  function getLettersMatrix(){
+    var lettersMatrix = []; 
+    var elements = getLettersElements();
+    var dimension = lettersGrid.getDimension();
+    for(var i = 0; i < dimension; i++){
+      lettersMatrix[i] = [];
+      for(var j = 0; j < dimension; j++){
+        lettersMatrix[i][j] = $(elements[j*dimension + i]).val();
+      }
+    }
+    return lettersMatrix;
+  }
 
   function getLettersElements(){
     return $.makeArray($('input.letter'));

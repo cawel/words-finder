@@ -77,17 +77,6 @@ function getDimension(){
   return 5;
 }
 
-function buildLettersMatrix(letters){
-  var lettersMatrix = [];
-  for(var i = 0; i < getDimension(); i++){
-    lettersMatrix[i] = [];
-    for(var j = 0; j < getDimension(); j++){
-      lettersMatrix[i][j] = letters[j*getDimension() + i];
-    }
-  }
-  return lettersMatrix;
-}
-
 function removeLongSequences(sequences){
   return sequences.filter(function(w){
     return w.longEnough();
@@ -175,8 +164,8 @@ exports.initialize = function initialize(){
   referenceWordsList = getReferenceWordsList();
 };
 
-exports.findWords = function(letters){
-  lettersMatrix = buildLettersMatrix(letters);
+exports.findWords = function(lettersMat){
+  lettersMatrix = lettersMat;
 
   if(serializedSequences){
     sequences = serializedSequences;
