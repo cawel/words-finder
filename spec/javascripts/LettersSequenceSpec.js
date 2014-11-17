@@ -12,6 +12,11 @@ describe("LettersSequence", function(){
     expect( JSON.stringify(sequence.getPositions()) ).toEqual( JSON.stringify(positions) );
   });
 
+  it("clones the constructor parameter positions", function(){
+    expect( sequence.getPositions() ).toEqual( positions );
+    expect( sequence.getPositions() ).not.toBe( positions );
+  });
+
   it("knows when a position already exists", function(){
     expect( sequence.positionExists([2, 0]) ).toBeTruthy();
   });
