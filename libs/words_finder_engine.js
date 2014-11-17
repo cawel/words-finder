@@ -4,8 +4,8 @@ var LettersSequence = require('./letters_sequence');
 var lettersMatrix;
 var dimension = 5;
 var referenceWordsList;
-var serializedSequences = null;
-var sequences = null;
+var serializedSequences;
+var sequences;
 
 var directions = {
   'up':         [ 0, -1], 
@@ -17,6 +17,11 @@ var directions = {
   'left':       [-1,  0], 
   'left-up':    [-1, -1]
 };
+
+function getReferenceWordsList(){
+  var data = fs.readFileSync('data/dict_en.txt');
+  return data.toString().split(/\W+/);
+}
 
 function setSerializedSequences(){
   var data = fs.readFileSync('data/3-4-5-6-7-letter-sequences.json');
@@ -60,7 +65,6 @@ function findAllLettersSequences(){
   var sevenLetterWords = sixLetterWords.reduce(function(memo, c){
     return memo.concat( radiatedSequences(c.getPositions()) );
   }, []);
-  console.log('about to generate 8-letter sequences');
 
   return sequences.concat(threeLetterWords, fourLetterWords, fiveLetterWords, sixLetterWords, sevenLetterWords);
 }
@@ -164,6 +168,13 @@ function radiatedSequences(positions){
   return sequences;
 }
 
+
+// exports public interface
+
+exports.initialize = function initialize(){
+  referenceWordsList = getReferenceWordsList();
+};
+
 exports.findWords = function(letters){
   lettersMatrix = buildLettersMatrix(letters);
 
@@ -185,9 +196,4 @@ exports.findWords = function(letters){
   return sequences.map(function(s){
     return [s.getLetters(getLettersMatrix()), s.getPositions()];
   });
-};
-
-exports.setReferenceWordsList = function(){
-  var data = fs.readFileSync('data/dict_en.txt');
-  referenceWordsList = data.toString().split(/\W+/);
 };

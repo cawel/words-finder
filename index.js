@@ -4,17 +4,17 @@ var haml = require('hamljs'),
     fs = require('fs'), 
     bodyParser = require('body-parser');
 var engine = require('./libs/words_finder_engine');
-engine.setReferenceWordsList();
+engine.initialize();
 
 
-// setup //
+// setup
 
 var app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use( bodyParser.json() );
 
 
-// routes //
+// routes
 
 app.get('/', function(req, res) {
   var hamlView = fs.readFileSync('views/main.haml', 'utf8');
