@@ -14,13 +14,11 @@ function LettersGrid(gridDimension){
   }
 
   function findWords(letters, callback){
-    console.log(letters);
     $.ajax({
       url: '/find-words',
       type: 'POST',
       data: JSON.stringify(letters),
       success: function(data){
-        console.log('success response.');
         callback(data);
       },
       dataType: 'json',
