@@ -6,6 +6,8 @@ You can either scatter letters in a ramdom fashion on the letters matrix or type
 
 If you hover on one of the words found, its letters will highlight in the matrix.
 
+The application is [live on heroku](https://serene-gorge-4010.herokuapp.com).
+
 
 ## Screenshot
 
