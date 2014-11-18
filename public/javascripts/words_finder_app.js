@@ -57,7 +57,7 @@ var WordsFinderApp = function(){
     for(var i = 0; i < dimension; i++){
       lettersMatrix[i] = [];
       for(var j = 0; j < dimension; j++){
-        lettersMatrix[i][j] = $(elements[j*dimension + i]).val();
+        lettersMatrix[i][j] = $(elements[j*dimension + i]).val().toLowerCase();
       }
     }
     return lettersMatrix;
