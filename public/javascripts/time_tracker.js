@@ -3,25 +3,25 @@
 var TimeTracker = function() {
 
   var startedAt;
-  var stoppedAt; 
+  var stoppedAt;
 
   var start = function() {
     stoppedAt = null;
-    startedAt = new Date();
+    startedAt = Date.now();
   };
 
   var stop = function() {
-    stoppedAt = new Date();
+    stoppedAt = Date.now();
   };
 
   var getTime = function() {
     if (!stoppedAt) { stop(); }
-    return stoppedAt.getTime() - startedAt.getTime();
+    return stoppedAt - startedAt;
   };
 
   var trackTime = function(callback){
     start();
-    callback.call();
+    callback();
     stop();
     return getTime();
   };
