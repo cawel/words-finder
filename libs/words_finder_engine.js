@@ -23,14 +23,19 @@ function getReferenceWordsList(){
   return data.toString().split(/\W+/);
 }
 
-function setSerializedSequences(){
-  var data = fs.readFileSync('data/3-4-5-6-7-letter-sequences.json');
-  return JSON.parse(data, function(key, value){
-    if(value instanceof Array){
-      return value;
-    }else{
-      return LettersSequence(JSON.parse(value));
+function getSerializedSequences(callback) {
+  fs.readFile('data/3-4-5-6-7-letter-sequences.json', function (err, data) {
+    if (err) {
+      callback(err);
+      return;
     }
+    callback(null, JSON.parse(data, function (key, value) {
+      if (value instanceof Array) {
+        return value;
+      } else {
+        return LettersSequence(JSON.parse(value));
+      }
+    }));
   });
 }
 
@@ -162,7 +167,11 @@ function radiatedSequences(positions){
 
 exports.initialize = function initialize(){
   referenceWordsList = getReferenceWordsList();
-  serializedSequences = setSerializedSequences();
+  getSerializedSequences(function (err, data) {
+    if (err) { throw err; }
+    serializedSequences = data;
+    console.log('serializedSequences ready!');
+  });
 };
 
 exports.findWords = function(lettersMat){
