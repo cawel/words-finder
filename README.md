@@ -2,7 +2,7 @@
 
 ## Description
 
-You can either scatter letters in a ramdom fashion on the letters matrix or type in the letters yourself. Then you can click a button to find all the existing words (from 3 up to 7 letters) in the letters matrix. 
+You can either scatter letters in a random fashion on the letters matrix or type in the letters yourself. Then you can click a button to find all the existing words (from 3 up to 7 letters) in the letters matrix.
 
 If you hover on one of the words found, its letters will highlight in the matrix.
 
