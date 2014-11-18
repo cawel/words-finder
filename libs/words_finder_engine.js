@@ -1,5 +1,6 @@
 var fs = require('fs');
 var LettersSequence = require('./letters_sequence');
+var _ = require('lodash');
 
 var lettersMatrix;
 var dimension;
@@ -8,13 +9,13 @@ var serializedSequences;
 var sequences;
 
 var directions = {
-  'up':         [ 0, -1], 
+  'up':         [ 0, -1],
   'up-right':   [ 1, -1],
   'right':      [ 1,  0],
   'right-down': [ 1,  1],
   'down':       [ 0,  1],
-  'down-left':  [-1,  1], 
-  'left':       [-1,  0], 
+  'down-left':  [-1,  1],
+  'left':       [-1,  0],
   'left-up':    [-1, -1]
 };
 
@@ -23,14 +24,19 @@ function getReferenceWordsList(){
   return data.toString().split(/\W+/);
 }
 
-function setSerializedSequences(){
-  var data = fs.readFileSync('data/3-4-5-6-7-letter-sequences.json');
-  return JSON.parse(data, function(key, value){
-    if(value instanceof Array){
-      return value;
-    }else{
-      return LettersSequence(JSON.parse(value));
+function getSerializedSequences(callback) {
+  fs.readFile('data/3-4-5-6-7-letter-sequences.json', function (err, data) {
+    if (err) {
+      callback(err);
+      return;
     }
+    callback(null, JSON.parse(data, function (key, value) {
+      if (value instanceof Array) {
+        return value;
+      } else {
+        return LettersSequence(JSON.parse(value));
+      }
+    }));
   });
 }
 
@@ -83,17 +89,9 @@ function removeLongSequences(sequences){
   });
 }
 
-function removeDuplicateSequences(sequences){
-  var set = [];
-  var word;
-  return sequences.filter(function(sequence) {
-    word = sequence.getLetters( getLettersMatrix() );
-    if( set.indexOf(word) == -1 ) {
-      set.push(word);
-      return true;
-    }else{
-      return false;
-    }
+function removeDuplicateSequences(sequences) {
+  return _.uniq(sequences, function (sequence) {
+    return sequence.getLetters(getLettersMatrix());
   });
 }
 
@@ -162,24 +160,19 @@ function radiatedSequences(positions){
 
 exports.initialize = function initialize(){
   referenceWordsList = getReferenceWordsList();
+  getSerializedSequences(function (err, data) {
+    if (err) { throw err; }
+    serializedSequences = data;
+    console.log('serializedSequences ready!');
+  });
 };
 
 exports.findWords = function(lettersMat){
   dimension = lettersMat.length;
   lettersMatrix = lettersMat;
 
-  if(serializedSequences){
-    sequences = serializedSequences;
-  }else {
-    serializedSequences = setSerializedSequences();
-    sequences = serializedSequences.slice(0);
-    // sequences = findAllLettersSequences();
-    // sequences = removeLongSequences(sequences);
-    // fs.writeFileSync('data/3-4-5-6-7-letter-sequences.json', JSON.stringify(sequences));
-    // serializedSequences = sequences.slice(0);
-  }
-
-  sequences = keepExistingSequences(sequences);
+  //sequences = serializedSequences.slice(); -- no need, keepExistingSequences will make a copy
+  sequences = keepExistingSequences(serializedSequences);
   sequences = removeDuplicateSequences(sequences);
   sequences = sortSequences(sequences);
 
