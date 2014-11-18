@@ -6,7 +6,7 @@ You can either scatter letters in a random fashion on the letters matrix or type
 
 If you hover on one of the words found, its letters will highlight in the matrix.
 
-The application is [live on heroku](http://serene-gorge-4010.herokuapp.com).
+The application is [live on heroku](http://words-finder.herokuapp.com).
 
 
 ## Screenshot
