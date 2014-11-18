@@ -25,4 +25,6 @@ app.post('/find-words', function(req, res) {
   res.json( engine.findWords(req.body) );
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, function(){
+  console.log('Server listening on port ' + (process.env.PORT || 3000) + '.');
+});
