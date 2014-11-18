@@ -25,4 +25,4 @@ app.post('/find-words', function(req, res) {
   res.json( engine.findWords(req.body) );
 });
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000, '127.0.0.1');
