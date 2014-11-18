@@ -18,9 +18,7 @@ function LettersGrid(gridDimension){
       url: '/find-words',
       type: 'POST',
       data: JSON.stringify(letters),
-      success: function(data){
-        callback(data);
-      },
+      success: callback,
       dataType: 'json',
       contentType: 'application/json; charset=utf-8'
     });
