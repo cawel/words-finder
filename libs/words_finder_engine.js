@@ -8,13 +8,13 @@ var serializedSequences;
 var sequences;
 
 var directions = {
-  'up':         [ 0, -1], 
+  'up':         [ 0, -1],
   'up-right':   [ 1, -1],
   'right':      [ 1,  0],
   'right-down': [ 1,  1],
   'down':       [ 0,  1],
-  'down-left':  [-1,  1], 
-  'left':       [-1,  0], 
+  'down-left':  [-1,  1],
+  'left':       [-1,  0],
   'left-up':    [-1, -1]
 };
 
