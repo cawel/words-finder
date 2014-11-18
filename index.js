@@ -1,9 +1,9 @@
-var express = require('express');
-var haml = require('hamljs'), 
-    path = require('path'),
-    fs = require('fs'), 
-    bodyParser = require('body-parser');
-var engine = require('./libs/words_finder_engine');
+var express     = require('express');
+var haml        = require('hamljs');
+var path        = require('path');
+var fs          = require('fs');
+var bodyParser  = require('body-parser');
+var engine      = require('./libs/words_finder_engine');
 engine.initialize();
 
 
