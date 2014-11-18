@@ -178,8 +178,8 @@ exports.findWords = function(lettersMat){
   dimension = lettersMat.length;
   lettersMatrix = lettersMat;
 
-  sequences = serializedSequences.slice();
-  sequences = keepExistingSequences(sequences);
+  //sequences = serializedSequences.slice(); -- no need, keepExistingSequences will make a copy
+  sequences = keepExistingSequences(serializedSequences);
   sequences = removeDuplicateSequences(sequences);
   sequences = sortSequences(sequences);
 
