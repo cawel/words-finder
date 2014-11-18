@@ -8,13 +8,13 @@ var serializedSequences;
 var sequences;
 
 var directions = {
-  'up':         [ 0, -1], 
+  'up':         [ 0, -1],
   'up-right':   [ 1, -1],
   'right':      [ 1,  0],
   'right-down': [ 1,  1],
   'down':       [ 0,  1],
-  'down-left':  [-1,  1], 
-  'left':       [-1,  0], 
+  'down-left':  [-1,  1],
+  'left':       [-1,  0],
   'left-up':    [-1, -1]
 };
 
@@ -162,23 +162,14 @@ function radiatedSequences(positions){
 
 exports.initialize = function initialize(){
   referenceWordsList = getReferenceWordsList();
+  serializedSequences = setSerializedSequences();
 };
 
 exports.findWords = function(lettersMat){
   dimension = lettersMat.length;
   lettersMatrix = lettersMat;
 
-  if(serializedSequences){
-    sequences = serializedSequences;
-  }else {
-    serializedSequences = setSerializedSequences();
-    sequences = serializedSequences.slice(0);
-    // sequences = findAllLettersSequences();
-    // sequences = removeLongSequences(sequences);
-    // fs.writeFileSync('data/3-4-5-6-7-letter-sequences.json', JSON.stringify(sequences));
-    // serializedSequences = sequences.slice(0);
-  }
-
+  sequences = serializedSequences.slice();
   sequences = keepExistingSequences(sequences);
   sequences = removeDuplicateSequences(sequences);
   sequences = sortSequences(sequences);
