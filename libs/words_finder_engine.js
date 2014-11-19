@@ -1,5 +1,6 @@
 var fs = require('fs');
 var LettersSequence = require('./letters_sequence');
+var _ = require('lodash');
 
 var lettersMatrix;
 var dimension;
@@ -83,17 +84,9 @@ function removeLongSequences(sequences){
   });
 }
 
-function removeDuplicateSequences(sequences){
-  var set = [];
-  var word;
-  return sequences.filter(function(sequence) {
-    word = sequence.getLetters( getLettersMatrix() );
-    if( set.indexOf(word) == -1 ) {
-      set.push(word);
-      return true;
-    }else{
-      return false;
-    }
+function removeDuplicateSequences(sequences) {
+  return _.uniq(sequences, function (sequence) {
+    return sequence.getLetters(getLettersMatrix());
   });
 }
 
