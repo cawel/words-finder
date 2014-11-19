@@ -169,19 +169,13 @@ exports.findWords = function(lettersMat){
   dimension = lettersMat.length;
   lettersMatrix = lettersMat;
 
-  // if(serializedSequences){
-    // sequences = serializedSequences;
-  // }else {
-    // serializedSequences = setSerializedSequences();
-    // sequences = serializedSequences.slice(0);
-    // sequences = findAllLettersSequences();
-    // sequences = removeLongSequences(sequences);
-    // fs.writeFileSync('data/3-4-5-6-7-letter-sequences.json', JSON.stringify(sequences));
-    // serializedSequences = sequences.slice(0);
-  // }
+  if(!serializedSequences){
+    sequences = findAllLettersSequences();
+    sequences = removeLongSequences(sequences);
+    serializedSequences = sequences.slice(0);
+  }
 
-  sequences = serializedSequences.slice(0);
-  sequences = keepExistingSequences(sequences);
+  sequences = keepExistingSequences(serializedSequences);
   sequences = removeDuplicateSequences(sequences);
   sequences = sortSequences(sequences);
 
