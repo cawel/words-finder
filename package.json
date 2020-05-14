@@ -4,7 +4,7 @@
   "description": "JavaScript app to find all the words in a matrix of letters.",
   "main": "index.js",
   "engines": {
-    "node": "~0.10.33"
+    "node": "12.15.0"
   },
   "directories": {
     "doc": "doc"
