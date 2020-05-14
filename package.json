@@ -12,7 +12,7 @@
   "dependencies": {
     "body-parser": "~1.9.2",
     "express": "^4.17.1",
-    "hamljs": "~0.6.2",
+    "hamljs": "^0.6.2",
     "karma": "^5.0.5",
     "lodash": "^4.17.15"
   },
