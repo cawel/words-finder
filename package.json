@@ -13,7 +13,7 @@
     "body-parser": "~1.9.2",
     "express": "^4.17.1",
     "hamljs": "~0.6.2",
-    "karma": "~0.12.24",
+    "karma": "^5.0.5",
     "lodash": "^4.17.15"
   },
   "devDependencies": {},
